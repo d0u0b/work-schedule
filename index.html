@@ -176,8 +176,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .day.sun .dt b,.day.sun .dt small{color:var(--sun)}
 .day.sat .dt b,.day.sat .dt small{color:var(--sat)}
 .cell{height:var(--cellH);border-radius:var(--s3);border:1px solid var(--line);background:var(--glass);font-size:var(--cellF);font-weight:900;padding:0}
-.cell.s-A{background:var(--sA)} .cell.s-B{background:var(--sB)} .cell.s-C{background:var(--sC)} .cell.s-D{background:var(--sD)}
-.cell.s-A,.cell.s-B,.cell.s-C,.cell.s-D{border-color:transparent}
+/* 班表格子只用字的顏色，不加底色 */
+.cell.s-A,.cell.s-B,.cell.s-C,.cell.s-D{background:var(--glassStrong)}
 .cell.off{color:var(--faint);font-size:15px;font-weight:500}
 .cell.other{opacity:.45}
 .nm.other{opacity:.6}
@@ -639,8 +639,8 @@ const T={
   month:{el:()=>$('monthnav'),title:'換月份',text:'按左右兩邊的箭頭，可以看上個月或下個月。打開時會自動顯示這個月。'},
   total:{el:()=>$('totalBtn'),title:'這個月上幾天',text:'這裡寫這個月一共上幾天班。點一下可以看每一種班各幾天。'},
   todayTap:{el:()=>$('todaycard'),title:'點卡片看表格',text:'點一下這張卡片，就會直接跳到下面表格裡今天那一行，可以順便看前後幾天的班。'},
-  mine:{el:()=>$('head'),title:'自己的班比較明顯',text:'洪國昌的兩欄是藍色底，格子顏色比較深；其他人的格子比較淡。看表時，看深色的就是自己的班。'},
-  row:{el:exampleRow,title:'一天一行',text:'每一行是一天。有顏色的格子是上班，寫 A、B、C、D；寫「休」的是休息。今天那一行會用淡橘色框起來。'},
+  mine:{el:()=>$('head'),title:'自己的班比較明顯',text:'洪國昌的名字是藍色底，他那兩欄的字比較深；其他人的格子比較淡。看表時，看字最清楚的就是自己的班。'},
+  row:{el:exampleRow,title:'一天一行',text:'每一行是一天。寫 A、B、C、D 的是上班，每一種班的字顏色不同；寫「休」的是休息。今天那一行會用淡橘色框起來。'},
   names:{el:()=>$('head'),title:'誰的班',text:'最上面這一排是名字。左邊三個人是第一處，右邊三個人是第二處。往下滑的時候，名字會一直留在上面。'},
   lock:{el:()=>$('fab'),show:'fab',title:'先按「修改班表」',text:'平常點格子不會改到，不怕按錯。要改的時候，按右下角這個「修改班表」。滑到班表的地方，它就會出現。'},
   cell:{el:exampleCell,title:'點格子改班',text:'按了「修改班表」之後，點想改的格子，下面會跳出 A、B、C、D 和「休息」，選一個就改好了。'},
@@ -666,7 +666,7 @@ const HELP=[
   {icon:'calendar',q:'怎麼看其他月份？',a:'<p>按月份兩邊的箭頭換月份。看別的月份時，會出現「回到這個月」按鈕，按一下就回來。</p>',tour:[T.month]},
   {icon:'chart',q:'這個月上幾天班？',a:'<p>月份下面寫著一共上幾天班。點一下，可以看第一處、第二處各種班上幾天。</p>',tour:[T.total]},
   {icon:'clock',q:'怎麼設定各班的時間？',a:'<p>點表格上方的「班別時間」卡片，在每一種班旁邊選開始和結束的時間，按「儲存」。設好之後，今天卡片和選班的時候都會顯示時間。</p>',tour:[T.times,T.times2]},
-  {icon:'grid',q:'表格怎麼看？',a:'<p>一天一行。上面一排是名字，左邊三人是第一處，右邊三人是第二處。有顏色、寫 A、B、C、D 的是上班，寫「休」的是休息。洪國昌的兩欄顏色比較深，其他人比較淡。</p>',tour:[T.names,T.mine,T.row]},
+  {icon:'grid',q:'表格怎麼看？',a:'<p>一天一行。上面一排是名字，左邊三人是第一處，右邊三人是第二處。寫 A、B、C、D 的是上班，寫「休」的是休息。洪國昌的兩欄字比較深，其他人比較淡。</p>',tour:[T.names,T.mine,T.row]},
   {icon:'pen',q:'怎麼修改班表？',a:'<p>先按右下角「修改班表」，再點想改的格子，選 A、B、C、D 或「休息」。改完按同一顆按鈕「儲存班表」。</p>',tour:[T.lock,T.cell,T.done]},
   {icon:'undo',q:'改錯了怎麼辦？',a:'<p>改完後，畫面上方會出現「復原」按鈕，按一下就會回到改之前的樣子。</p>',tour:[T.undo]},
   {icon:'copy',q:'新的月份怎麼排班？',a:'<p>換到新的月份，按「照上個月複製」，把上個月的排法帶過來，再按「修改班表」挑要改的格子修改。</p>',tour:[T.nextMonth,T.copy,T.lock]},

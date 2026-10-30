@@ -1,5 +1,5 @@
 // 班表 Service Worker：沒有網路也能打開；有網路時自動拿最新版本
-const VERSION = 'v8';
+const VERSION = 'v9';
 const SHELL = `roster-shell-${VERSION}`;
 const FONTS = 'roster-fonts';
 const FILES = [
