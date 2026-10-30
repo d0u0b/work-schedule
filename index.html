@@ -25,7 +25,7 @@
   --glass:rgba(255,255,255,.74); --glassStrong:rgba(255,255,255,.92); --headBg:rgba(234,245,253,.9);
   --ink:#2b4258; --muted:#5f7489; --faint:#a3b7c9; --line:rgba(98,155,205,.28);
   --accent:#3d8cce; --accent-ink:#ffffff; --accentSoft:rgba(125,189,236,.24); --meBg:rgba(150,205,245,.38); --meLine:#8ec2ea;
-  --sun:#d46c64; --sat:#4c9670; --today:rgba(255,236,222,.66); --todayLine:#f2c7a8;
+  --sun:#d46c64; --sat:#4c9670; --today:rgba(255,242,190,.78); --todayLine:#ecca5e;
   --edit:#ffe8de; --editInk:#c2674a;
   --sA:#cfe5fb; --sA-ink:#255f96;
   --sB:#f9d8e3; --sB-ink:#a0405f;
@@ -63,6 +63,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s1);padding:0}
 .tool .ic{width:24px;height:24px}
 .menu-list{display:flex;flex-direction:column;gap:var(--s2)}
+.mgroup{display:flex;flex-direction:column;gap:var(--s2)}
+.mgroup h3{margin:0;padding-left:var(--s1);font-size:.9em;font-weight:700;color:var(--muted);letter-spacing:.08em}
 .mi{font-size:1.02em;width:100%;min-height:64px;border:1px solid var(--line);border-radius:var(--s4);background:#fff;display:flex;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);text-align:left}
 .mi .qi{width:44px;height:44px;border-radius:var(--s3);background:var(--accentSoft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
 .mi .qi .ic{width:24px;height:24px}
@@ -74,14 +76,14 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 
 /* 今天 */
 .todaycard{background:var(--today);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:2px solid var(--todayLine);border-radius:var(--s5);
-  padding:var(--s3) var(--s4) var(--s4);display:flex;flex-direction:column;gap:var(--s3);box-shadow:0 8px 24px rgba(232,160,120,.14)}
+  padding:var(--s3) var(--s4) var(--s4);display:flex;flex-direction:column;gap:var(--s3);box-shadow:0 8px 24px rgba(220,180,60,.16)}
 .todaycard{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .todaycard:active{transform:scale(.99)}
 .todaycard .gorow{display:flex;justify-content:flex-end;margin-top:calc(var(--s1) * -1)}
-.todaycard .go{font-size:.85em;color:#b86c45;background:rgba(255,255,255,.75);border-radius:999px;padding:var(--s1) var(--s3);display:inline-flex;align-items:center;gap:var(--s1);white-space:nowrap}
+.todaycard .go{font-size:.85em;color:#8a6a12;background:rgba(255,255,255,.75);border-radius:999px;padding:var(--s1) var(--s3);display:inline-flex;align-items:center;gap:var(--s1);white-space:nowrap}
 .todaycard .go .ic{width:1em;height:1em}
 .todaycard .lbl{font-weight:700;color:var(--muted);display:flex;align-items:center;gap:var(--s2)}
-.todaycard .lbl .ic{color:#e8956a;width:1.3em;height:1.3em}
+.todaycard .lbl .ic{color:#dba522;width:1.3em;height:1.3em}
 .todaycard .lbl b{color:var(--ink);font-size:1.2em}
 .todayshift{display:flex;flex-wrap:wrap;gap:var(--s2)}
 .ts{display:flex;align-items:center;gap:var(--s3);background:var(--glassStrong);border-radius:var(--s4);padding:var(--s2) var(--s4) var(--s2) var(--s2);font-size:1.05em;font-weight:700}
@@ -130,19 +132,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .total .more{font-size:.85em;color:var(--accent);display:inline-flex;align-items:center;flex:none;white-space:nowrap}
 .backnow{min-height:52px;border-radius:var(--s4);border:2px solid var(--accent);background:var(--glassStrong);color:var(--accent);font-size:1em;font-weight:700;padding:0 var(--s4);display:flex;align-items:center;justify-content:center;gap:var(--s2)}
 
-/* 班別時間 */
-.legend{border-radius:var(--s5);padding:var(--s3) var(--s4) var(--s4);display:flex;flex-direction:column;gap:var(--s3);text-align:left;width:100%;font-size:1em}
-.legend-h{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);font-weight:700}
-.legend-h > span{display:flex;align-items:center;gap:var(--s2)}
-.legend-h .ic{color:var(--accent);width:1.2em;height:1.2em}
-.legend-h .more{font-size:.85em;color:var(--accent);display:inline-flex;align-items:center}
-.legend-h .more .ic{width:1em;height:1em}
-.legend-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2) var(--s3)}
-.lg-i{display:flex;align-items:center;gap:var(--s2);min-width:0}
-.lg-i .chip{min-width:40px;height:40px;font-size:20px;flex:none}
-.lg-i span{font-variant-numeric:tabular-nums;font-weight:700;font-size:.92em;line-height:1.25;min-width:0}
-.lg-i small{display:block;font-size:.8em;color:var(--muted);font-weight:500}
-.lg-i .unset{color:var(--faint);font-weight:500}
+/* 班別時間設定 */
 .tblock{display:flex;flex-direction:column;gap:var(--s2);background:var(--accentSoft);border-radius:var(--s4);padding:var(--s3)}
 .th{display:flex;align-items:center;gap:var(--s2);font-weight:700}
 .th .chip{min-width:40px;height:40px;font-size:20px}
@@ -319,7 +309,6 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
     <button class="big" id="copyPrev"><i data-icon="copy"></i>照上個月複製</button>
   </section>
 
-  <button class="legend glass" id="legend"></button>
 
   <div class="head">
     <div class="editbar" id="editbar" hidden><i data-icon="pen"></i>修改中：點格子就能改</div>
@@ -512,7 +501,7 @@ function renderToday(){
   h+='</div>';
   const tw=me.map(p=>({s:shiftOn(p.id,tm.getFullYear(),tm.getMonth()+1,tm.getDate()),pl:placeOf(p)})).filter(w=>w.s);
   h+=`<div class="tomorrow"><div class="tlbl">${ic('arrowR')}明天 ${tm.getMonth()+1}/${tm.getDate()}（${WD[tm.getDay()]}）</div><div class="tlist">${tw.length?tw.map(w=>{const t=fmtTime(w.s);return `<div class="tw"><span class="chip s-${w.s}">${w.s}</span><span><b>${esc(w.pl.label)} ${w.s} 班</b>${t?`<small>${t}${overnight(w.s)?'（到隔天）':''}</small>`:''}</span></div>`}).join(''):`<div class="tw off">${ic('moon')}休息</div>`}</div></div>`;
-  h+=`<div class="gorow"><span class="go">看整個月的班表${ic('down')}</span></div>`;
+  h+=`<div class="gorow"><span class="go">看今天班表${ic('down')}</span></div>`;
   $('todaycard').innerHTML=h;
 }
 
@@ -526,8 +515,6 @@ function render(){
   $('empty').hidden=hasData(key(Y,M));
   const {total}=monthCounts();
   $('totalBtn').innerHTML=`<span class="t1">${ic('chart')}<span>${M}月 共上班 <b>${total}</b> 天</span></span><span class="more">詳細${ic('chevR')}</span>`;
-  $('legend').innerHTML=`<div class="legend-h"><span>${ic('clock')}班別時間</span><span class="more">設定${ic('chevR')}</span></div>
-    <div class="legend-g">${SHIFTS.map(s=>{const t=fmtTime(s);return `<div class="lg-i"><span class="chip s-${s}">${s}</span>${t?`<span>${t}${overnight(s)?'<small>到隔天</small>':''}</span>`:'<span class="unset">還沒設定</span>'}</div>`}).join('')}</div>`;
 
   let hh='<div></div>';
   PLACES.forEach(pl=>{hh+=`<button class="ph" data-place="${pl.id}">${esc(pl.label)}</button>`});
@@ -624,7 +611,6 @@ function showTimes(){
     }
   });
 }
-$('legend').onclick=showTimes;
 function needUnlock(){toast('請先按右下角「修改班表」',false,'pen')}
 
 $('days').addEventListener('click',e=>{const c=e.target.closest('[data-p]');if(!c)return;if(!editing)return needUnlock();pickShift(c.dataset.p,+c.dataset.d)});
@@ -703,44 +689,44 @@ if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostnam
 function exampleRow(){const d=isNowMonth()?NOW.getDate():1;return document.querySelector(`[data-row="${d}"]`)||document.querySelector('[data-row]')}
 const exampleCell=()=>{const r=exampleRow();return r&&r.querySelector('[data-p="p3"]')};
 const T={
-  today:{el:()=>$('todaycard'),title:'今天上什麼班',text:'最上面這張淡橘色的卡片，會寫今天和明天上什麼班。打開就能看到。'},
+  today:{el:()=>$('todaycard'),title:'今天上什麼班',text:'最上面這張淡黃色的卡片，會寫今天和明天上什麼班。打開就能看到。'},
   month:{el:()=>$('monthnav'),title:'換月份',text:'按左右兩邊的箭頭，可以看上個月或下個月。打開時會自動顯示這個月。最早只到開始上班的那個月，左邊箭頭會變淡。'},
   total:{el:()=>$('totalBtn'),title:'這個月上幾天',text:'這裡寫這個月一共上幾天班。點一下可以看每一種班各幾天。'},
-  todayTap:{el:()=>$('todaycard'),title:'點卡片看表格',text:'點一下這張卡片，或右下角的「看整個月的班表」，就會跳到下面的班表，直接看到今天那一行，前後幾天的班也看得到。'},
+  todayTap:{el:()=>$('todaycard'),title:'點卡片看表格',text:'點一下這張卡片，或右下角的「看今天班表」，就會跳到下面的班表，直接看到今天那一行，前後幾天的班也看得到。'},
   mine:{el:()=>$('head'),title:'自己的班比較明顯',text:'洪國昌的名字是藍色底，他那兩欄的字比較深；其他人的格子比較淡。看表時，看字最清楚的就是自己的班。'},
-  row:{el:exampleRow,title:'一天一行',text:'每一行是一天。寫 A、B、C、D 的是上班，每一種班的字顏色不同；寫「休」的是休息。今天那一行會用淡橘色框起來。'},
+  row:{el:exampleRow,title:'一天一行',text:'每一行是一天。寫 A、B、C、D 的是上班，每一種班的字顏色不同；寫「休」的是休息。今天那一行會用淡黃色框起來。'},
   names:{el:()=>$('head'),title:'誰的班',text:'最上面這一排是名字。上面寫的是哨所名稱，左邊三個人是第一個哨所，右邊三個人是第二個哨所。往下滑的時候，名字會一直留在上面。'},
   lock:{el:()=>$('fab'),show:'fab',title:'先按「修改班表」',text:'平常點格子不會改到，不怕按錯。要改的時候，按右下角這個「修改班表」。滑到班表的地方，它就會出現。'},
   cell:{el:exampleCell,title:'點格子改班',text:'按了「修改班表」之後，點想改的格子，下面會跳出 A、B、C、D 和「休息」，選一個就改好了。'},
   done:{el:()=>$('fab'),show:'fab',preview:true,title:'改完按「儲存班表」',text:'按了「修改班表」之後，右下角的按鈕會變成橘色的「儲存班表」。改完按它，就存好了。'},
   undo:{el:exampleCell,title:'改錯了沒關係',text:'每次改完，畫面上方會出現一行字，旁邊有「復原」按鈕。按一下，就會回到改之前的樣子。'},
   toTop:{el:()=>$('topBtn'),show:'topBtn',title:'回到最上面',text:'往下滑到比較下面的時候，右下角會出現「回到最上面」按鈕。按一下就會回到最上面。'},
-  times:{el:()=>$('legend'),title:'班別時間',text:'這張卡片寫 A、B、C、D 每一種班是幾點到幾點。點一下就可以設定時間。'},
+  times:{el:()=>$('menuBtn'),title:'班別時間',text:'A、B、C、D 每一種班幾點到幾點，收在右上角「選單」的「設定」裡，點「班別時間」就能看和修改。平常今天卡片上也會寫時間。'},
   times2:{title:'選時間',text:'點時間的格子，會跳出選時間的畫面，選好幾點幾分再按「設定」。四種班都選好後，按「儲存」就完成了。夜班跨到隔天也沒關係，會自動寫「到隔天」。'},
   installLater:{el:()=>$('menuBtn'),title:'之後想放到桌面',text:'好的。之後想把班表放到手機桌面，按右上角的「選單」，點「放到手機桌面」就可以了。'},
   nextMonth:{el:()=>$('next'),title:'到新的月份',text:'先按右邊的箭頭，換到要排班的月份。'},
   copy:{el:()=>visible($('copyPrev'))?$('copyPrev'):null,title:'照上個月複製',text:'新的月份如果還是空的，會出現「照上個月複製」按鈕。按一下，就會把上個月的排法帶過來，再按右下角「修改班表」，挑要改的格子修改就好。'},
-  places:{el:()=>$('head').querySelector('[data-place]'),title:'哨所名稱可以改',text:'這裡寫的是兩個上班的地方。按右下角「修改班表」後，點哨所名稱就能改；也可以在右上角「選單」裡點「改哨所名稱」。'},
+  places:{el:()=>$('head').querySelector('[data-place]'),title:'哨所名稱可以改',text:'這裡寫的是兩個上班的地方。可以在右上角「選單」的「設定」裡點「改哨所名稱」；或按右下角「修改班表」後，直接點哨所名稱。'},
   rename:{el:()=>$('head').querySelector('[data-rename]'),title:'點名字改名字',text:'按了「修改班表」之後，點最上面的名字，就可以改成正確的字，按「儲存」就好。'},
-  font:{el:()=>$('menuBtn'),title:'字太小？',text:'按右上角的「選單」，再點「放大字體」，整個畫面的字和格子都會變大。想變回來，一樣在選單裡點「縮小字體」。'},
-  menu:{el:()=>$('menuBtn'),title:'右上角的選單',text:'按「選單」，裡面有放大字體、班別時間、使用說明、再看一次教學，還有放到手機桌面。忘記怎麼用，就從這裡找。'},
+  font:{el:()=>$('menuBtn'),title:'字太小？',text:'按右上角的「選單」，在「常用」裡點「放大字體」，整個畫面的字和格子都會變大。想變回來，一樣在選單裡點「縮小字體」。'},
+  menu:{el:()=>$('menuBtn'),title:'右上角的選單',text:'按「選單」，裡面分成三組：「常用」有修改班表、回到今天、放大字體；「設定」有班別時間、哨所名稱、人員名字；「說明」有使用說明、教學和放到手機桌面。'},
   inst1:{title:'用 Chrome 打開班表',text:'先用手機上的 Chrome 瀏覽器打開班表的網址。'},
   inst2:{title:'點右上角三個點',text:'點 Chrome 右上角的「⋮」（直的三個點）。'},
   inst3:{title:'選「加到主畫面」',text:'在選單裡點「加到主畫面」。有的手機會寫「安裝應用程式」，點它也可以。'},
   inst4:{title:'按「安裝」',text:'跳出視窗後按「安裝」或「新增」。回到手機桌面，就會看到藍色的「班表」圖示，以後點它就能打開。'},
 };
-const MAIN_TOUR=[{title:'歡迎使用班表',text:'這是洪國昌的班表。接下來用幾個步驟，帶您看怎麼使用。'},T.today,T.todayTap,T.month,T.total,T.times,T.mine,T.places,T.row,T.lock,T.cell,T.done,T.toTop,T.menu];
+const MAIN_TOUR=[{title:'歡迎使用班表',text:'這是洪國昌的班表。接下來用幾個步驟，帶您看怎麼使用。'},T.today,T.todayTap,T.month,T.total,T.mine,T.places,T.row,T.lock,T.cell,T.done,T.toTop,T.menu];
 const HELP=[
-  {icon:'sun',q:'今天上什麼班？',a:'<p>打開畫面，最上面淡橘色的卡片就會寫今天和明天上什麼班。點這張卡片，會直接跳到表格裡今天那一行。今天那一行也會用淡橘色框起來。</p>',tour:[T.today,T.todayTap,T.row]},
+  {icon:'sun',q:'今天上什麼班？',a:'<p>打開畫面，最上面淡黃色的卡片就會寫今天和明天上什麼班。點這張卡片，會直接跳到表格裡今天那一行。今天那一行也會用淡黃色框起來。</p>',tour:[T.today,T.todayTap,T.row]},
   {icon:'calendar',q:'怎麼看其他月份？',a:'<p>按月份兩邊的箭頭換月份。看別的月份時，會出現「回到這個月」按鈕，按一下就回來。</p>',tour:[T.month]},
   {icon:'chart',q:'這個月上幾天班？',a:'<p>月份下面寫著一共上幾天班。點一下，可以看兩個哨所各種班上幾天。</p>',tour:[T.total]},
-  {icon:'clock',q:'怎麼設定各班的時間？',a:'<p>點表格上方的「班別時間」卡片，在每一種班旁邊選開始和結束的時間，按「儲存」。設好之後，今天卡片和選班的時候都會顯示時間。</p>',tour:[T.times,T.times2]},
+  {icon:'clock',q:'怎麼設定各班的時間？',a:'<p>打開右上角「選單」，在「設定」裡點「班別時間」，在每一種班旁邊選開始和結束的時間，按「儲存」。設好之後，今天卡片和選班的時候都會顯示時間。</p>',tour:[T.times,T.times2]},
   {icon:'grid',q:'表格怎麼看？',a:'<p>一天一行。上面一排是名字，左邊三人是第一個哨所，右邊三人是第二個哨所。寫 A、B、C、D 的是上班，寫「休」的是休息。洪國昌的兩欄字比較深，其他人比較淡。</p>',tour:[T.names,T.mine,T.row]},
   {icon:'pen',q:'怎麼修改班表？',a:'<p>先按右下角「修改班表」，再點想改的格子，選 A、B、C、D 或「休息」。改完按同一顆按鈕「儲存班表」。</p>',tour:[T.lock,T.cell,T.done]},
   {icon:'undo',q:'改錯了怎麼辦？',a:'<p>改完後，畫面上方會出現「復原」按鈕，按一下就會回到改之前的樣子。</p>',tour:[T.undo]},
   {icon:'copy',q:'新的月份怎麼排班？',a:'<p>換到新的月份，按「照上個月複製」，把上個月的排法帶過來，再按「修改班表」挑要改的格子修改。</p>',tour:[T.nextMonth,T.copy,T.lock]},
-  {icon:'pin',q:'怎麼改哨所的名稱？',a:'<p>打開右上角「選單」，點「改哨所名稱」，改好按「儲存」。也可以先按右下角「修改班表」，再點表格上方的哨所名稱。</p>',tour:[T.places]},
-  {icon:'user',q:'名字寫錯了怎麼改？',a:'<p>按「修改班表」後，點最上面的名字，改好按「儲存」。</p>',tour:[T.lock,T.rename]},
+  {icon:'pin',q:'怎麼改哨所的名稱？',a:'<p>打開右上角「選單」，在「設定」裡點「改哨所名稱」，改好按「儲存」。也可以先按右下角「修改班表」，再點表格上方的哨所名稱。</p>',tour:[T.places]},
+  {icon:'user',q:'名字寫錯了怎麼改？',a:'<p>打開右上角「選單」，在「設定」裡點「改人員名字」，改好按「儲存」。也可以按「修改班表」後，直接點最上面的名字。</p>',tour:[T.lock,T.rename]},
   {icon:'arrowUpCircle',q:'滑太下面，怎麼回到上面？',a:'<p>往下滑之後，右下角會出現「回到最上面」按鈕，按一下就回到最上面。</p>',tour:[T.toTop]},
   {icon:'textUp',q:'字太小看不清楚',a:'<p>按右上角的「選單」，點「放大字體」，字和格子都會變大。想變回來，在選單裡點「縮小字體」。</p>',tour:[T.font]},
   {id:'install',icon:'phone',q:'怎麼放到手機桌面？',a:'<p>放到桌面以後，就像 App 一樣，點圖示就能打開。</p><ol><li>用 Chrome 打開班表網址</li><li>點右上角 <span class="kbd">⋮</span></li><li>點「加到主畫面」或「安裝應用程式」</li><li>按「安裝」，桌面就會出現「班表」圖示</li></ol><p>放到桌面後，裡面的班表跟用 Chrome 打開看到的是同一份，改了兩邊都一樣。</p>',tour:[T.inst1,T.inst2,T.inst3,T.inst4],installBtn:true},
@@ -777,20 +763,49 @@ function goToday(){
 }
 $('todaycard').addEventListener('click',goToday);
 $('todaycard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();goToday()}});
+function showNames(){
+  const list=state.people.filter(p=>!(p.me&&p.id!==state.people.find(q=>q.me).id));
+  let h=`<div class="sheet-head"><h2>${ic('user')}人員名字</h2><button class="closex" data-close aria-label="關閉">${ic('x')}</button></div>
+    <p class="note">名字寫錯或看不清楚，可以在這裡改。</p>`;
+  list.forEach(p=>{h+=`<div class="tblock"><div class="th">${p.me?'自己':esc(placeOf(p).label)}</div><input id="nm-${p.id}" value="${esc(p.name)}" maxlength="8" autocomplete="off" aria-label="${esc(p.name)}的名字"></div>`});
+  h+=`<div class="row2"><button class="big" data-ok>${ic('check')}儲存</button><button class="big ghost" data-close>${ic('x')}取消</button></div>`;
+  openSheet(h,e=>{
+    const b=e.target.closest('button');if(!b)return;
+    if(b.hasAttribute('data-close'))return closeSheet();
+    if(b.hasAttribute('data-ok')){
+      const before=JSON.stringify(state.people),snap=before;
+      const next=JSON.parse(before);
+      list.forEach(p=>{const v=$(`nm-${p.id}`).value.trim();if(!v)return;next.forEach(q=>{if(q.id===p.id||(p.me&&q.me))q.name=v})});
+      closeSheet();
+      if(JSON.stringify(next)===before)return;
+      remember();state.people=next;commit('名字改好了');
+    }
+  });
+}
 function showMenu(){
-  const items=[
-    {k:'edit',icon:editing?'check':'pen',t:editing?'儲存班表':'修改班表',d:editing?'改好了，存起來':'改格子或名字'},
-    {k:'font',icon:bigText?'textDown':'textUp',t:bigText?'縮小字體':'放大字體',d:bigText?'字和格子變回原本大小':'讓字和格子變大'},
-    {k:'times',icon:'clock',t:'班別時間',d:'設定 A、B、C、D 幾點到幾點'},
-    {k:'places',icon:'pin',t:'改哨所名稱',d:`目前：${esc(state.places[1])}、${esc(state.places[2])}`},
-    {k:'today',icon:'calToday',t:'回到今天',d:'跳到這個月、今天那一行'},
-    {k:'help',icon:'help',t:'使用說明',d:'每個功能怎麼用'},
-    {k:'tour',icon:'play',t:'從頭看使用教學',d:'一步一步帶著看'},
+  const groups=[
+    {g:'常用',items:[
+      {k:'edit',icon:editing?'check':'pen',t:editing?'儲存班表':'修改班表',d:editing?'改好了，存起來':'改格子裡的班'},
+      {k:'today',icon:'calToday',t:'回到今天',d:'跳到這個月、今天那一行'},
+      {k:'font',icon:bigText?'textDown':'textUp',t:bigText?'縮小字體':'放大字體',d:bigText?'字和格子變回原本大小':'讓字和格子變大'},
+    ]},
+    {g:'設定',items:[
+      {k:'times',icon:'clock',t:'班別時間',d:'A、B、C、D 幾點到幾點'},
+      {k:'places',icon:'pin',t:'改哨所名稱',d:`目前：${esc(state.places[1])}、${esc(state.places[2])}`},
+      {k:'names',icon:'user',t:'改人員名字',d:'名字寫錯可以在這裡改'},
+    ]},
+    {g:'說明',items:[
+      {k:'help',icon:'help',t:'使用說明',d:'每個功能怎麼用'},
+      {k:'tour',icon:'play',t:'從頭看使用教學',d:'一步一步帶著看'},
+    ]},
   ];
-  if(!isStandalone())items.push({k:'install',icon:'phone',t:'放到手機桌面',d:'像 App 一樣，點圖示就能打開'});
-  let h=`<div class="sheet-head"><h2>${ic('menu')}選單</h2><button class="closex" data-close aria-label="關閉">${ic('x')}</button></div><div class="menu-list">`;
-  items.forEach(it=>{h+=`<button class="mi" data-k="${it.k}"><span class="qi">${ic(it.icon)}</span><span class="mt"><b>${it.t}</b><small>${it.d}</small></span>${ic('chevR','chev')}</button>`});
-  h+='</div>';
+  if(!isStandalone())groups[2].items.push({k:'install',icon:'phone',t:'放到手機桌面',d:'像 App 一樣，點圖示就能打開'});
+  let h=`<div class="sheet-head"><h2>${ic('menu')}選單</h2><button class="closex" data-close aria-label="關閉">${ic('x')}</button></div>`;
+  groups.forEach(gr=>{
+    h+=`<section class="mgroup"><h3>${gr.g}</h3><div class="menu-list">`;
+    gr.items.forEach(it=>{h+=`<button class="mi" data-k="${it.k}"><span class="qi">${ic(it.icon)}</span><span class="mt"><b>${it.t}</b><small>${it.d}</small></span>${ic('chevR','chev')}</button>`});
+    h+='</div></section>';
+  });
   openSheet(h,e=>{
     const b=e.target.closest('button');if(!b)return;
     if(b.hasAttribute('data-close'))return closeSheet();
@@ -800,6 +815,7 @@ function showMenu(){
     else if(k==='font'){setFont(!bigText);toast(bigText?'字已經放大':'字已經變回原本大小',false,bigText?'textUp':'textDown')}
     else if(k==='times')showTimes();
     else if(k==='places')showPlaces();
+    else if(k==='names')showNames();
     else if(k==='today')goToday();
     else if(k==='help')showHelp(-1);
     else if(k==='tour')startTour(MAIN_TOUR,true);
