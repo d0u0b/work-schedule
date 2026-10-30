@@ -38,7 +38,8 @@
 }
 :root.bigtext{--fs:21px; --cellH:68px; --cellF:32px; --dtF:26px}
 *{box-sizing:border-box}
-html{background:var(--bg)}
+html{background:var(--bg);touch-action:manipulation}
+button,a,[role=button]{touch-action:manipulation}
 body{background:var(--bg) linear-gradient(180deg,var(--bgTop) 0%,var(--bg) 35%,var(--bgBottom) 100%) no-repeat;background-attachment:fixed;min-height:100%;
   color:var(--ink);font-family:var(--font);font-size:var(--fs);line-height:1.5;
   padding-left:max(var(--s3),env(safe-area-inset-left,0px));padding-right:max(var(--s3),env(safe-area-inset-right,0px));padding-block:var(--s2) 160px}
@@ -76,7 +77,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
   padding:var(--s3) var(--s4) var(--s4);display:flex;flex-direction:column;gap:var(--s3);box-shadow:0 8px 24px rgba(232,160,120,.14)}
 .todaycard{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .todaycard:active{transform:scale(.99)}
-.todaycard .go{margin-left:auto;font-size:.85em;color:#c27a52;display:inline-flex;align-items:center;white-space:nowrap}
+.todaycard .gorow{display:flex;justify-content:flex-end;margin-top:calc(var(--s1) * -1)}
+.todaycard .go{font-size:.85em;color:#b86c45;background:rgba(255,255,255,.75);border-radius:999px;padding:var(--s1) var(--s3);display:inline-flex;align-items:center;gap:var(--s1);white-space:nowrap}
 .todaycard .go .ic{width:1em;height:1em}
 .todaycard .lbl{font-weight:700;color:var(--muted);display:flex;align-items:center;gap:var(--s2)}
 .todaycard .lbl .ic{color:#e8956a;width:1.3em;height:1.3em}
@@ -105,17 +107,19 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 /* 月份 */
 .monthbox{border-radius:var(--s5);padding:var(--s3);display:flex;flex-direction:column;gap:var(--s3)}
 .top{display:grid;grid-template-columns:56px 1fr 56px;align-items:center;gap:var(--s2)}
+.nav:disabled{opacity:.3;cursor:default}
 .nav{height:56px;border-radius:var(--s4);border:1px solid var(--line);background:var(--accentSoft);display:flex;align-items:center;justify-content:center;padding:0;color:var(--accent)}
 .nav .ic{width:28px;height:28px;stroke-width:2.6}
 .month{text-align:center;line-height:1.15}
 .month b{display:flex;align-items:center;justify-content:center;gap:var(--s2);font-size:1.65em;font-weight:900}
 .month b .ic{width:.8em;height:.8em;color:var(--accent)}
 .month .yr{display:block;font-size:.9em;color:var(--muted)}
-.total{min-height:56px;border-radius:var(--s4);border:0;background:var(--accentSoft);font-size:1.05em;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:var(--s2) var(--s3);text-align:center}
-.total .t1{display:flex;align-items:center;justify-content:center;gap:var(--s2)}
-.total .t1 .ic{color:var(--accent);width:1.3em;height:1.3em}
-.total b{font-size:1.35em;font-weight:900;font-variant-numeric:tabular-nums}
-.total .more{font-size:.85em;color:var(--accent);display:inline-flex;align-items:center}
+.total{min-height:60px;border-radius:var(--s4);border:0;background:var(--accentSoft);font-size:1.05em;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:var(--s2);padding:var(--s2) var(--s3) var(--s2) var(--s4);text-align:left}
+.total .t1{display:flex;align-items:center;gap:var(--s2);min-width:0}
+.total .t1 .ic{color:var(--accent);width:24px;height:24px;flex:none}
+.total .t1 span{line-height:1.2}
+.total b{font-size:1.35em;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+.total .more{font-size:.85em;color:var(--accent);display:inline-flex;align-items:center;flex:none;white-space:nowrap}
 .backnow{min-height:52px;border-radius:var(--s4);border:2px solid var(--accent);background:var(--glassStrong);color:var(--accent);font-size:1em;font-weight:700;padding:0 var(--s4);display:flex;align-items:center;justify-content:center;gap:var(--s2)}
 
 /* 班別時間 */
@@ -345,6 +349,7 @@ const ICONS={
   chart:'<path d="M4 20h16"/><rect x="5.5" y="11" width="3" height="6" rx="1"/><rect x="10.5" y="6" width="3" height="11" rx="1"/><rect x="15.5" y="9" width="3" height="8" rx="1"/>',
   calendar:'<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
   calToday:'<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M9 14.8l2 2 4-4"/>',
+  down:'<path d="M12 5v14M6 13l6 6 6-6"/>',
   up:'<path d="M12 19V5M6 11l6-6 6 6"/>',
   check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
   undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',
@@ -490,12 +495,13 @@ function renderToday(){
   const y=NOW.getFullYear(),m=NOW.getMonth()+1,d=NOW.getDate();
   const tm=new Date(y,m-1,d+1);
   const work=me.map(p=>({s:shiftOn(p.id,y,m,d),pl:placeOf(p)})).filter(w=>w.s);
-  let h=`<div class="lbl">${ic('sun')}<span>今天 <b>${m}月${d}日　星期${WD[NOW.getDay()]}</b></span><span class="go">看表格${ic('chevR')}</span></div><div class="todayshift">`;
+  let h=`<div class="lbl">${ic('sun')}<span>今天 <b>${m}月${d}日　星期${WD[NOW.getDay()]}</b></span></div><div class="todayshift">`;
   if(work.length)work.forEach(w=>{const t=fmtTime(w.s);h+=`<div class="ts"><span class="chip s-${w.s}">${w.s}</span><span>${w.pl.label} ${w.s} 班${t?`<span class="tm">${t}${overnight(w.s)?'（到隔天）':''}</span>`:''}</span></div>`});
   else h+=`<div class="ts off">${ic('moon')}${esc(meName())} 今天休息</div>`;
   h+='</div>';
   const tw=me.map(p=>({s:shiftOn(p.id,tm.getFullYear(),tm.getMonth()+1,tm.getDate()),pl:placeOf(p)})).filter(w=>w.s);
   h+=`<div class="tomorrow">${ic('arrowR')}<span>明天 ${tm.getMonth()+1}/${tm.getDate()}（${WD[tm.getDay()]}）：<b>${tw.length?tw.map(w=>w.pl.label+' '+w.s+' 班'+(fmtTime(w.s)?`（${fmtTime(w.s)}）`:'')).join('、'):'休息'}</b></span></div>`;
+  h+=`<div class="gorow"><span class="go">看整個月的班表${ic('down')}</span></div>`;
   $('todaycard').innerHTML=h;
 }
 
@@ -505,9 +511,10 @@ function render(){
   document.title=meName()+'班表';$('appTitle').textContent=meName()+'的班表';
   $('mtitle').textContent=M+' 月';$('ytitle').textContent=Y+' 年';
   $('backnow').hidden=isNowMonth();
+  $('prev').disabled=key(Y,M)<=firstMonth();
   $('empty').hidden=hasData(key(Y,M));
   const {total}=monthCounts();
-  $('totalBtn').innerHTML=`<span class="t1">${ic('chart')}<span>${M}月 共上班 <b>${total}</b> 天</span></span><span class="more">看詳細${ic('chevR')}</span>`;
+  $('totalBtn').innerHTML=`<span class="t1">${ic('chart')}<span>${M}月 共上班 <b>${total}</b> 天</span></span><span class="more">詳細${ic('chevR')}</span>`;
   $('legend').innerHTML=`<div class="legend-h"><span>${ic('clock')}班別時間</span><span class="more">設定${ic('chevR')}</span></div>
     <div class="legend-g">${SHIFTS.map(s=>{const t=fmtTime(s);return `<div class="lg-i"><span class="chip s-${s}">${s}</span>${t?`<span>${t}${overnight(s)?'<small>到隔天</small>':''}</span>`:'<span class="unset">還沒設定</span>'}</div>`}).join('')}</div>`;
 
@@ -611,7 +618,9 @@ function needUnlock(){toast('請先按右下角「修改班表」',false,'pen')}
 
 $('days').addEventListener('click',e=>{const c=e.target.closest('[data-p]');if(!c)return;if(!editing)return needUnlock();pickShift(c.dataset.p,+c.dataset.d)});
 $('head').addEventListener('click',e=>{const n=e.target.closest('[data-rename]');if(!n)return;if(!editing)return needUnlock();rename(n.dataset.rename)});
-$('prev').onclick=()=>{M--;if(M<1){M=12;Y--}render()};
+// 最早只能看到有排班的第一個月
+function firstMonth(){const ks=Object.keys(state.months).filter(hasData).sort();return ks[0]||key(NOW.getFullYear(),NOW.getMonth()+1)}
+$('prev').onclick=()=>{if(key(Y,M)<=firstMonth())return;M--;if(M<1){M=12;Y--}render()};
 $('next').onclick=()=>{M++;if(M>12){M=1;Y++}render()};
 $('backnow').onclick=()=>{Y=NOW.getFullYear();M=NOW.getMonth()+1;render()};
 $('copyPrev').onclick=()=>{
@@ -668,9 +677,9 @@ function exampleRow(){const d=isNowMonth()?NOW.getDate():1;return document.query
 const exampleCell=()=>{const r=exampleRow();return r&&r.querySelector('[data-p="p3"]')};
 const T={
   today:{el:()=>$('todaycard'),title:'今天上什麼班',text:'最上面這張淡橘色的卡片，會寫今天和明天上什麼班。打開就能看到。'},
-  month:{el:()=>$('monthnav'),title:'換月份',text:'按左右兩邊的箭頭，可以看上個月或下個月。打開時會自動顯示這個月。'},
+  month:{el:()=>$('monthnav'),title:'換月份',text:'按左右兩邊的箭頭，可以看上個月或下個月。打開時會自動顯示這個月。最早只到開始上班的那個月，左邊箭頭會變淡。'},
   total:{el:()=>$('totalBtn'),title:'這個月上幾天',text:'這裡寫這個月一共上幾天班。點一下可以看每一種班各幾天。'},
-  todayTap:{el:()=>$('todaycard'),title:'點卡片看表格',text:'點一下這張卡片，就會直接跳到下面表格裡今天那一行，可以順便看前後幾天的班。'},
+  todayTap:{el:()=>$('todaycard'),title:'點卡片看表格',text:'點一下這張卡片，或右下角的「看整個月的班表」，就會跳到下面的班表，直接看到今天那一行，前後幾天的班也看得到。'},
   mine:{el:()=>$('head'),title:'自己的班比較明顯',text:'洪國昌的名字是藍色底，他那兩欄的字比較深；其他人的格子比較淡。看表時，看字最清楚的就是自己的班。'},
   row:{el:exampleRow,title:'一天一行',text:'每一行是一天。寫 A、B、C、D 的是上班，每一種班的字顏色不同；寫「休」的是休息。今天那一行會用淡橘色框起來。'},
   names:{el:()=>$('head'),title:'誰的班',text:'最上面這一排是名字。左邊三個人是第一處，右邊三個人是第二處。往下滑的時候，名字會一直留在上面。'},
