@@ -372,11 +372,8 @@ const KEY='hong-roster-v1', FONT_KEY='hong-roster-font', TOUR_KEY='hong-roster-t
 const $=id=>document.getElementById(id);
 const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 
-function seed(){
-  const people=[
-    {id:'p1',name:'范榮星',place:1},{id:'p2',name:'吳政桓',place:1},{id:'p3',name:'洪國昌',place:1,me:true},
-    {id:'p4',name:'林□毅',place:2},{id:'p5',name:'曾百章',place:2},{id:'p6',name:'洪國昌',place:2,me:true},
-  ];
+// 11 月：原始班表
+function monthNov(){
   const m={p1:{},p2:{},p3:{},p4:{},p5:{},p6:{}};
   for(let d=1;d<=30;d++){
     const r=d%5;
@@ -389,11 +386,45 @@ function seed(){
     if(r===4) m.p6[d]='C';
     if(r===0) m.p6[d]='D';
   }
-  return {people,months:{'2026-11':m}};
+  return m;
+}
+// 10 月：原始班表（不在名單上的人那幾天留空）
+function monthOct(){
+  const m={p1:{},p2:{},p3:{},p4:{},p5:{},p6:{}};
+  const h1A=[9,14,19,24,29], h1B=[7,12,17,22,27];
+  const h2C=[5,10,11,15,20,25,30], h2D=[6,16,21,26,31];
+  h1A.forEach(d=>m.p3[d]='A'); h1B.forEach(d=>m.p3[d]='B');
+  h2C.forEach(d=>m.p6[d]='C'); h2D.forEach(d=>m.p6[d]='D');
+  for(let d=1;d<=31;d++){
+    if(![2,3].includes(d)&&!h1A.includes(d)) m.p1[d]='A';
+    if(!h1B.includes(d)) m.p2[d]='B';
+    if(!h2C.includes(d)) m.p4[d]='C';
+    if(d!==1&&!h2D.includes(d)) m.p5[d]='D';
+  }
+  return m;
+}
+const SEED_MONTHS={'2026-10':monthOct,'2026-11':monthNov};
+const SEED_TIMES={A:{start:'07:00',end:'19:00'},B:{start:'19:00',end:'07:00'},C:{start:'06:30',end:'18:30'},D:{start:'18:30',end:'06:30'}};
+function seed(){
+  const people=[
+    {id:'p1',name:'范榮星',place:1},{id:'p2',name:'吳政桓',place:1},{id:'p3',name:'洪國昌',place:1,me:true},
+    {id:'p4',name:'林□毅',place:2},{id:'p5',name:'曾百章',place:2},{id:'p6',name:'洪國昌',place:2,me:true},
+  ];
+  return {people,months:{},times:{},seeded:[]};
 }
 let state;try{state=JSON.parse(ls.get(KEY))}catch(e){}
 if(!state)state=seed();
 state.times=state.times||{};
+// 補上新找到的原始資料（每份只補一次，不覆蓋已經排好的月份）
+state.seeded=state.seeded||[];
+Object.keys(SEED_MONTHS).forEach(k=>{
+  if(state.seeded.includes(k))return;
+  const mo=state.months[k];
+  if(!mo||!Object.values(mo).some(o=>Object.keys(o).length))state.months[k]=SEED_MONTHS[k]();
+  state.seeded.push(k);
+});
+if(!state.seeded.includes('times')){if(!Object.keys(state.times).length)state.times=JSON.parse(JSON.stringify(SEED_TIMES));state.seeded.push('times')}
+try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
 function persist(){ls.set(KEY,JSON.stringify(state))}
 
 /* ---------- 鎖定 / 字體 ---------- */
