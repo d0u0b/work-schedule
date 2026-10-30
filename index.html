@@ -286,7 +286,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
   </section>
 
   <section class="empty glass" id="empty" hidden>
-    <p><i data-icon="info"></i><span><b>這個月還沒排班。</b>按右下角的「開始修改」之後，可以直接點格子排，或先照上個月複製一份再改。</span></p>
+    <p><i data-icon="info"></i><span><b>這個月還沒排班。</b>可以先照上個月複製一份，再按右下角「開始修改」改要改的格子。</span></p>
     <button class="big" id="copyPrev"><i data-icon="copy"></i>照上個月複製</button>
   </section>
 
@@ -381,12 +381,20 @@ function persist(){ls.set(KEY,JSON.stringify(state))}
 
 /* ---------- 鎖定 / 字體 ---------- */
 let editing=false;
-function setEditing(v){
-  editing=v;
+function renderFab(v){
   $('fab').classList.toggle('editing',v);
   $('fab').innerHTML=v?ic('lock')+'完成，鎖定':ic('pen')+'開始修改';
+}
+// 修改按鈕：滑到班表才出現；修改中一直顯示
+function updateFab(){
+  if(typeof tourShown!=='undefined'&&tourShown===$('fab'))return;
+  $('fab').hidden=!editing&&$('days').getBoundingClientRect().top>innerHeight*0.7;
+}
+function setEditing(v){
+  editing=v;renderFab(v);
   $('editbar').hidden=!v;
   document.documentElement.classList.toggle('editing-on',v);
+  updateFab();
 }
 function toggleEdit(){setEditing(!editing);toast(editing?'現在可以修改了':'已鎖定並儲存',false)}
 $('fab').onclick=toggleEdit;
@@ -400,7 +408,8 @@ $('fontBtn').onclick=()=>setFont(!bigText);
 
 /* ---------- 回到最上面 ---------- */
 function updateTopBtn(){if(typeof tourShown!=='undefined'&&tourShown===$('topBtn'))return;$('topBtn').hidden=scrollY<500}
-addEventListener('scroll',updateTopBtn,{passive:true});
+addEventListener('scroll',()=>{updateTopBtn();updateFab()},{passive:true});
+addEventListener('resize',updateFab);
 $('topBtn').onclick=()=>scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 
 /* ---------- 日期（網址加 #test-2026-12-05 可以假裝成那一天） ---------- */
@@ -474,6 +483,7 @@ function render(){
     h+='</div>';
   }
   $('days').innerHTML=h;
+  updateFab();
 }
 
 /* ---------- 底部選單 ---------- */
@@ -557,7 +567,6 @@ $('prev').onclick=()=>{M--;if(M<1){M=12;Y--}render()};
 $('next').onclick=()=>{M++;if(M>12){M=1;Y++}render()};
 $('backnow').onclick=()=>{Y=NOW.getFullYear();M=NOW.getMonth()+1;render()};
 $('copyPrev').onclick=()=>{
-  if(!editing)return needUnlock();
   let py=Y,pm=M-1;if(pm<1){pm=12;py--}
   if(!hasData(key(py,pm))){toast('上個月也是空的',false);return}
   remember();
@@ -615,16 +624,16 @@ const T={
   total:{el:()=>$('totalBtn'),title:'這個月上幾天',text:'這裡寫這個月一共上幾天班。點一下可以看每一種班各幾天。'},
   row:{el:exampleRow,title:'一天一行',text:'每一行是一天。有顏色的格子是上班，寫 A、B、C、D；寫「休」的是休息。今天那一行會用黃色框起來。'},
   names:{el:()=>$('head'),title:'誰的班',text:'最上面這一排是名字。左邊三個人是第一處，右邊三個人是第二處。往下滑的時候，名字會一直留在上面。'},
-  lock:{el:()=>$('fab'),title:'先按「開始修改」',text:'平常是鎖住的，不會不小心改到。要改的時候，按右下角這個「開始修改」。不管滑到哪裡，它都會在右下角。'},
+  lock:{el:()=>$('fab'),show:'fab',title:'先按「開始修改」',text:'平常是鎖住的，不會不小心改到。要改的時候，按右下角這個「開始修改」。滑到班表的地方，它就會出現在右下角。'},
   cell:{el:exampleCell,title:'點格子改班',text:'開始修改之後，點想改的格子，下面會跳出 A、B、C、D 和「休息」，選一個就改好了。'},
-  done:{el:()=>$('fab'),title:'改完記得鎖定',text:'開始修改之後，右下角的按鈕會變成橘色的「完成，鎖定」。改完按它，就會鎖住並儲存。'},
+  done:{el:()=>$('fab'),show:'fab',preview:true,title:'改完記得鎖定',text:'開始修改之後，右下角的按鈕會變成橘色的「完成，鎖定」。改完按它，就會鎖住並儲存。'},
   undo:{el:exampleCell,title:'改錯了沒關係',text:'每次改完，畫面上方會出現一行字，旁邊有「復原」按鈕。按一下，就會回到改之前的樣子。'},
   toTop:{el:()=>$('topBtn'),show:'topBtn',title:'回到最上面',text:'往下滑到比較下面的時候，右下角會出現「回到最上面」按鈕。按一下就會回到最上面。'},
   times:{el:()=>$('legend'),title:'班別時間',text:'這張卡片寫 A、B、C、D 每一種班是幾點到幾點。點一下就可以設定時間。'},
   times2:{title:'選時間',text:'點時間的格子，會跳出選時間的畫面，選好幾點幾分再按「設定」。四種班都選好後，按「儲存」就完成了。夜班跨到隔天也沒關係，會自動寫「到隔天」。'},
   installLater:{el:()=>$('helpBtn'),title:'之後想放到桌面',text:'好的。之後想把班表放到手機桌面，按「使用說明」，找「怎麼放到手機桌面？」就可以了。'},
   nextMonth:{el:()=>$('next'),title:'到新的月份',text:'先按右邊的箭頭，換到要排班的月份。'},
-  copy:{title:'照上個月複製',text:'新的月份如果還是空的，畫面會出現「照上個月複製」按鈕。先按「開始修改」，再按這顆，就會把上個月的排法帶過來，再挑要改的格子修改就好。'},
+  copy:{el:()=>visible($('copyPrev'))?$('copyPrev'):null,title:'照上個月複製',text:'新的月份如果還是空的，會出現「照上個月複製」按鈕。按一下，就會把上個月的排法帶過來，再按右下角「開始修改」，挑要改的格子修改就好。'},
   rename:{el:()=>$('head').querySelector('[data-rename]'),title:'點名字改名字',text:'開始修改之後，點最上面的名字，就可以改成正確的字，按「儲存」就好。'},
   font:{el:()=>$('fontBtn'),title:'字太小？',text:'按「放大字體」，整個畫面的字和格子都會變大。再按一次就變回來。'},
   help:{el:()=>$('helpBtn'),title:'忘記怎麼用',text:'按「使用說明」，可以找到每個功能怎麼用，也能再看一次這個教學。想把班表放到手機桌面，也在裡面。'},
@@ -676,7 +685,8 @@ function showHelp(open){
 $('helpBtn').onclick=()=>showHelp(-1);
 
 let tour=null,tourEl=null,tourShown=null;
-function restoreShown(){if(tourShown){tourShown=null;updateTopBtn()}}
+let tourPreview=false;
+function restoreShown(){if(tourPreview){tourPreview=false;renderFab(editing)}if(tourShown){tourShown=null;updateTopBtn();updateFab()}}
 function startTour(steps,main){closeSheet();$('toast').hidden=true;tour={steps,main,i:0};showStep()}
 function endTour(){restoreShown();const wasMain=tour&&tour.main;if(wasMain){ls.set(TOUR_KEY,'1');setTimeout(maybeAskInstall,0)}tour=null;tourEl=null;$('tourblock').hidden=true;$('ring').hidden=true;$('tourcard').hidden=true}
 function visible(el){if(!el)return false;const r=el.getBoundingClientRect();return r.width>0&&r.height>0}
@@ -684,6 +694,7 @@ function showStep(){
   const s=tour.steps[tour.i],n=tour.steps.length,last=tour.i===n-1;
   restoreShown();
   if(s.show){const e=$(s.show);if(e){e.hidden=false;tourShown=e}}
+  if(s.preview&&!editing){renderFab(true);tourPreview=true}
   tourEl=s.el?s.el():null;if(!visible(tourEl))tourEl=null;
   $('tourblock').hidden=false;$('tourcard').hidden=false;
   $('tourblock').classList.toggle('dim',!tourEl);
