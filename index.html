@@ -52,15 +52,16 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 
 /* 標題 */
 .brand{display:flex;align-items:center;gap:var(--s3);padding-top:var(--s2)}
-.brand svg{width:44px;height:44px;flex:none;filter:drop-shadow(0 4px 8px rgba(61,140,206,.25))}
-.brand h1{margin:0;font-size:1.3em;font-weight:900;letter-spacing:.02em}
+.brand h1{flex:1;min-width:0}
+.brand > svg{width:44px;height:44px;flex:none;filter:drop-shadow(0 4px 8px rgba(61,140,206,.25))}
+.brand h1{margin:0;font-size:1.25em;font-weight:900;letter-spacing:.02em;line-height:1.3}
 
 /* 工具列 */
-.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
-.tool{min-height:56px;border-radius:var(--s4);font-size:16px;font-weight:700;white-space:nowrap;
-  display:flex;align-items:center;justify-content:center;gap:var(--s1);padding:0 var(--s2)}
-.tool .ic{width:20px;height:20px}
-@media (max-width:340px){.tool .ic{display:none}}
+.tools{display:flex;align-items:center;gap:var(--s2);flex:none}
+.tool{width:68px;height:60px;border-radius:var(--s4);font-size:13px;font-weight:700;white-space:nowrap;line-height:1.1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s1);padding:0}
+.tool .ic{width:22px;height:22px}
+@media (max-width:360px){.tool{width:60px;font-size:12px}}
 
 /* 今天 */
 .todaycard{background:var(--today);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:2px solid var(--todayLine);border-radius:var(--s5);
@@ -266,12 +267,12 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 </div>
 
 <div class="wrap" id="app">
-  <header class="brand"><svg viewBox="0 0 512 512" data-logo aria-hidden="true"></svg><h1 id="appTitle">洪國昌的班表</h1></header>
-
-  <div class="tools">
-    <button class="tool glass" id="fontBtn"></button>
-    <button class="tool glass" id="helpBtn"><i data-icon="help"></i>使用說明</button>
-  </div>
+  <header class="brand"><svg viewBox="0 0 512 512" data-logo aria-hidden="true"></svg><h1 id="appTitle">洪國昌的班表</h1>
+    <div class="tools">
+      <button class="tool glass" id="fontBtn"></button>
+      <button class="tool glass" id="helpBtn"><i data-icon="help"></i>使用說明</button>
+    </div>
+  </header>
 
   <section class="todaycard" id="todaycard"></section>
 
