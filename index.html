@@ -60,7 +60,15 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .tools{display:flex;align-items:center;gap:var(--s2);flex:none}
 .tool{width:68px;height:60px;border-radius:var(--s4);font-size:13px;font-weight:700;white-space:nowrap;line-height:1.1;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s1);padding:0}
-.tool .ic{width:22px;height:22px}
+.tool .ic{width:24px;height:24px}
+.menu-list{display:flex;flex-direction:column;gap:var(--s2)}
+.mi{width:100%;min-height:64px;border:1px solid var(--line);border-radius:var(--s4);background:#fff;display:flex;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);text-align:left}
+.mi .qi{width:44px;height:44px;border-radius:var(--s3);background:var(--accentSoft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
+.mi .qi .ic{width:24px;height:24px}
+.mi .mt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.35}
+.mi .mt b{font-size:1.05em}
+.mi .mt small{font-size:.8em;color:var(--muted);font-weight:500}
+.mi .chev{width:20px;height:20px;color:var(--faint)}
 @media (max-width:360px){.tool{width:60px;font-size:12px}}
 
 /* 今天 */
@@ -269,8 +277,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 <div class="wrap" id="app">
   <header class="brand"><svg viewBox="0 0 512 512" data-logo aria-hidden="true"></svg><h1 id="appTitle">洪國昌的班表</h1>
     <div class="tools">
-      <button class="tool glass" id="fontBtn"></button>
-      <button class="tool glass" id="helpBtn"><i data-icon="help"></i>使用說明</button>
+      <button class="tool glass" id="menuBtn" aria-haspopup="dialog"><i data-icon="menu"></i>選單</button>
     </div>
   </header>
 
@@ -319,6 +326,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 const ICONS={
   pen:'<path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5z"/><path d="M13.5 7l3 3"/>',
   lock:'<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><path d="M12 14.5v2"/>',
+  menu:'<path d="M4 6.5h16M4 12h16M4 17.5h16"/>',
   help:'<circle cx="12" cy="12" r="9.5"/><path d="M9.5 9.3a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.2-2.5 3.8"/><path d="M12 17.5h.01"/>',
   textUp:'<path d="M3 19l5-13 5 13M4.8 14.5h6.4"/><path d="M18 8v8M14 12h8"/>',
   textDown:'<path d="M3 19l5-13 5 13M4.8 14.5h6.4"/><path d="M14 12h8"/>',
@@ -402,10 +410,9 @@ $('fab').onclick=toggleEdit;
 let bigText=ls.get(FONT_KEY)==='big';
 function setFont(v){
   bigText=v;document.documentElement.classList.toggle('bigtext',v);
-  $('fontBtn').innerHTML=v?ic('textDown')+'縮小字體':ic('textUp')+'放大字體';
   ls.set(FONT_KEY,v?'big':'normal');
 }
-$('fontBtn').onclick=()=>setFont(!bigText);
+
 
 /* ---------- 回到最上面 ---------- */
 function updateTopBtn(){if(typeof tourShown!=='undefined'&&tourShown===$('topBtn'))return;$('topBtn').hidden=scrollY<500}
@@ -632,18 +639,18 @@ const T={
   toTop:{el:()=>$('topBtn'),show:'topBtn',title:'回到最上面',text:'往下滑到比較下面的時候，右下角會出現「回到最上面」按鈕。按一下就會回到最上面。'},
   times:{el:()=>$('legend'),title:'班別時間',text:'這張卡片寫 A、B、C、D 每一種班是幾點到幾點。點一下就可以設定時間。'},
   times2:{title:'選時間',text:'點時間的格子，會跳出選時間的畫面，選好幾點幾分再按「設定」。四種班都選好後，按「儲存」就完成了。夜班跨到隔天也沒關係，會自動寫「到隔天」。'},
-  installLater:{el:()=>$('helpBtn'),title:'之後想放到桌面',text:'好的。之後想把班表放到手機桌面，按「使用說明」，找「怎麼放到手機桌面？」就可以了。'},
+  installLater:{el:()=>$('menuBtn'),title:'之後想放到桌面',text:'好的。之後想把班表放到手機桌面，按右上角的「選單」，點「放到手機桌面」就可以了。'},
   nextMonth:{el:()=>$('next'),title:'到新的月份',text:'先按右邊的箭頭，換到要排班的月份。'},
   copy:{el:()=>visible($('copyPrev'))?$('copyPrev'):null,title:'照上個月複製',text:'新的月份如果還是空的，會出現「照上個月複製」按鈕。按一下，就會把上個月的排法帶過來，再按右下角「開始修改」，挑要改的格子修改就好。'},
   rename:{el:()=>$('head').querySelector('[data-rename]'),title:'點名字改名字',text:'開始修改之後，點最上面的名字，就可以改成正確的字，按「儲存」就好。'},
-  font:{el:()=>$('fontBtn'),title:'字太小？',text:'按「放大字體」，整個畫面的字和格子都會變大。再按一次就變回來。'},
-  help:{el:()=>$('helpBtn'),title:'忘記怎麼用',text:'按「使用說明」，可以找到每個功能怎麼用，也能再看一次這個教學。想把班表放到手機桌面，也在裡面。'},
+  font:{el:()=>$('menuBtn'),title:'字太小？',text:'按右上角的「選單」，再點「放大字體」，整個畫面的字和格子都會變大。想變回來，一樣在選單裡點「縮小字體」。'},
+  menu:{el:()=>$('menuBtn'),title:'右上角的選單',text:'按「選單」，裡面有放大字體、班別時間、使用說明、再看一次教學，還有放到手機桌面。忘記怎麼用，就從這裡找。'},
   inst1:{title:'用 Chrome 打開班表',text:'先用手機上的 Chrome 瀏覽器打開班表的網址。'},
   inst2:{title:'點右上角三個點',text:'點 Chrome 右上角的「⋮」（直的三個點）。'},
   inst3:{title:'選「加到主畫面」',text:'在選單裡點「加到主畫面」。有的手機會寫「安裝應用程式」，點它也可以。'},
   inst4:{title:'按「安裝」',text:'跳出視窗後按「安裝」或「新增」。回到手機桌面，就會看到藍色的「班表」圖示，以後點它就能打開。'},
 };
-const MAIN_TOUR=[{title:'歡迎使用班表',text:'這是洪國昌的班表。接下來用幾個步驟，帶您看怎麼使用。'},T.today,T.month,T.total,T.times,T.row,T.lock,T.cell,T.done,T.toTop,T.font,T.help];
+const MAIN_TOUR=[{title:'歡迎使用班表',text:'這是洪國昌的班表。接下來用幾個步驟，帶您看怎麼使用。'},T.today,T.month,T.total,T.times,T.row,T.lock,T.cell,T.done,T.toTop,T.menu];
 const HELP=[
   {icon:'sun',q:'今天上什麼班？',a:'<p>打開畫面，最上面黃色的卡片就會寫今天和明天上什麼班。下面表格裡，今天那一行也會用黃色框起來。</p>',tour:[T.today,T.row]},
   {icon:'calendar',q:'怎麼看其他月份？',a:'<p>按月份兩邊的箭頭換月份。看別的月份時，會出現「回到這個月」按鈕，按一下就回來。</p>',tour:[T.month]},
@@ -655,7 +662,7 @@ const HELP=[
   {icon:'copy',q:'新的月份怎麼排班？',a:'<p>換到新的月份，按「開始修改」，再按「照上個月複製」，把上個月的排法帶過來，再挑要改的格子修改。</p>',tour:[T.nextMonth,T.lock,T.copy]},
   {icon:'user',q:'名字寫錯了怎麼改？',a:'<p>按「開始修改」後，點最上面的名字，改好按「儲存」。</p>',tour:[T.lock,T.rename]},
   {icon:'arrowUpCircle',q:'滑太下面，怎麼回到上面？',a:'<p>往下滑之後，右下角會出現「回到最上面」按鈕，按一下就回到最上面。</p>',tour:[T.toTop]},
-  {icon:'textUp',q:'字太小看不清楚',a:'<p>按上面的「放大字體」，字和格子都會變大。再按一次「縮小字體」就變回來。</p>',tour:[T.font]},
+  {icon:'textUp',q:'字太小看不清楚',a:'<p>按右上角的「選單」，點「放大字體」，字和格子都會變大。想變回來，在選單裡點「縮小字體」。</p>',tour:[T.font]},
   {id:'install',icon:'phone',q:'怎麼放到手機桌面？',a:'<p>放到桌面以後，就像 App 一樣，點圖示就能打開。</p><ol><li>用 Chrome 打開班表網址</li><li>點右上角 <span class="kbd">⋮</span></li><li>點「加到主畫面」或「安裝應用程式」</li><li>按「安裝」，桌面就會出現「班表」圖示</li></ol><p>放到桌面後，裡面的班表跟用 Chrome 打開看到的是同一份，改了兩邊都一樣。</p>',tour:[T.inst1,T.inst2,T.inst3,T.inst4],installBtn:true},
 ];
 function showHelp(open){
@@ -683,7 +690,34 @@ function showHelp(open){
   });
   if(open>=0)requestAnimationFrame(()=>{const q=$('sheet').querySelector(`[data-acc="${open}"]`);q&&q.scrollIntoView({block:'start'})});
 }
-$('helpBtn').onclick=()=>showHelp(-1);
+function showMenu(){
+  const items=[
+    {k:'edit',icon:editing?'lock':'pen',t:editing?'完成，鎖定':'開始修改',d:editing?'改完了，鎖住並儲存':'修改班表的格子或名字'},
+    {k:'font',icon:bigText?'textDown':'textUp',t:bigText?'縮小字體':'放大字體',d:bigText?'字和格子變回原本大小':'讓字和格子變大'},
+    {k:'times',icon:'clock',t:'班別時間',d:'設定 A、B、C、D 幾點到幾點'},
+    {k:'today',icon:'calToday',t:'回到今天',d:'跳到這個月、今天那一行'},
+    {k:'help',icon:'help',t:'使用說明',d:'每個功能怎麼用'},
+    {k:'tour',icon:'play',t:'從頭看使用教學',d:'一步一步帶著看'},
+  ];
+  if(!isStandalone())items.push({k:'install',icon:'phone',t:'放到手機桌面',d:'像 App 一樣，點圖示就能打開'});
+  let h=`<div class="sheet-head"><h2>${ic('menu')}選單</h2><button class="closex" data-close>${ic('x')}關閉</button></div><div class="menu-list">`;
+  items.forEach(it=>{h+=`<button class="mi" data-k="${it.k}"><span class="qi">${ic(it.icon)}</span><span class="mt"><b>${it.t}</b><small>${it.d}</small></span>${ic('chevR','chev')}</button>`});
+  h+='</div>';
+  openSheet(h,e=>{
+    const b=e.target.closest('button');if(!b)return;
+    if(b.hasAttribute('data-close'))return closeSheet();
+    const k=b.dataset.k;if(!k)return;
+    closeSheet();
+    if(k==='edit')toggleEdit();
+    else if(k==='font'){setFont(!bigText);toast(bigText?'字已經放大':'字已經變回原本大小',false,bigText?'textUp':'textDown')}
+    else if(k==='times')showTimes();
+    else if(k==='today'){Y=NOW.getFullYear();M=NOW.getMonth()+1;render();const r=document.querySelector('.day.today');if(r)r.scrollIntoView({block:'center'})}
+    else if(k==='help')showHelp(-1);
+    else if(k==='tour')startTour(MAIN_TOUR,true);
+    else if(k==='install')doInstall();
+  });
+}
+$('menuBtn').onclick=showMenu;
 
 let tour=null,tourEl=null,tourShown=null;
 let tourPreview=false;
