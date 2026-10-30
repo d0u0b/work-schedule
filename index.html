@@ -95,8 +95,12 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .ts .tx b{font-size:1.3em;font-weight:900}
 .ts .tm{font-size:.85em;color:var(--muted);font-variant-numeric:tabular-nums}
 .ts .st{font-size:.9em;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
-.ts .st.on{color:#1f7a55;display:inline-flex;align-items:center;gap:var(--s1)}
-.ts .st.on::before{content:"";width:8px;height:8px;border-radius:50%;background:#2fa36f;box-shadow:0 0 0 3px rgba(47,163,111,.2)}
+.ts .st.on{color:#1f7a55;display:inline-flex;align-items:center;gap:var(--s2)}
+.ts .st.on::before{content:"";flex:none;width:8px;height:8px;margin-left:2px;border-radius:50%;background:#2fa36f;box-shadow:0 0 0 3px rgba(47,163,111,.2)}
+@media (prefers-reduced-motion:no-preference){
+  .ts .st.on::before{animation:ripple 1.8s ease-out infinite}
+  @keyframes ripple{0%{box-shadow:0 0 0 0 rgba(47,163,111,.55)}70%{box-shadow:0 0 0 8px rgba(47,163,111,0)}100%{box-shadow:0 0 0 0 rgba(47,163,111,0)}}
+}
 .ts.done{opacity:.75}
 .ts.off .chip{background:#e7eafb;color:#7d8ad0}
 .ts.off .chip .ic{width:30px;height:30px}
