@@ -408,7 +408,7 @@ const SEED_TIMES={A:{start:'07:00',end:'19:00'},B:{start:'19:00',end:'07:00'},C:
 function seed(){
   const people=[
     {id:'p1',name:'范榮星',place:1},{id:'p2',name:'吳政桓',place:1},{id:'p3',name:'洪國昌',place:1,me:true},
-    {id:'p4',name:'林□毅',place:2},{id:'p5',name:'曾百章',place:2},{id:'p6',name:'洪國昌',place:2,me:true},
+    {id:'p4',name:'林恒毅',place:2},{id:'p5',name:'曾百章',place:2},{id:'p6',name:'洪國昌',place:2,me:true},
   ];
   return {people,months:{},times:{},seeded:[]};
 }
@@ -424,6 +424,7 @@ Object.keys(SEED_MONTHS).forEach(k=>{
   state.seeded.push(k);
 });
 if(!state.seeded.includes('times')){if(!Object.keys(state.times).length)state.times=JSON.parse(JSON.stringify(SEED_TIMES));state.seeded.push('times')}
+if(!state.seeded.includes('name-p4')){const p4=state.people.find(p=>p.id==='p4');if(p4&&p4.name==='林□毅')p4.name='林恒毅';state.seeded.push('name-p4')}
 try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
 function persist(){ls.set(KEY,JSON.stringify(state))}
 
