@@ -82,7 +82,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .todaycard.p-morning{--c1:#fff6f1;--c2:#ffe1d3;--cl:rgba(240,165,135,.5);--cs:rgba(230,140,110,.16);--cd:rgba(245,150,110,.28);--cg:#f6a988;--cgi:#5c2a14;--cgo:#94492a;--csep:rgba(220,140,110,.3)}
 .todaycard.p-night{--c1:#f3f3ff;--c2:#dfe2fb;--cl:rgba(140,150,220,.5);--cs:rgba(110,120,200,.18);--cd:rgba(125,135,215,.3);--cg:#a9b1ef;--cgi:#26306e;--cgo:#3f4a9a;--csep:rgba(130,140,210,.3)}
 .todaycard:active{transform:scale(.99)}
-.todaycard .deco{position:absolute;right:-28px;top:-28px;width:128px;height:128px;color:var(--cd);pointer-events:none}
+.todaycard .deco{position:absolute;right:-18px;top:-18px;width:116px;height:116px;color:var(--cd);pointer-events:none}
 .todaycard .lbl{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap;position:relative}
 .todaycard .greet{background:var(--cg);color:var(--cgi);font-weight:900;font-size:1.05em;border-radius:999px;padding:0 var(--s3);line-height:1.8;letter-spacing:.06em}
 .todaycard .lbl b{font-size:1.2em;font-weight:900}
@@ -512,6 +512,14 @@ function monthCounts(){
 }
 
 // 班別在某一天的上下班時間（夜班的下班時間算到隔天）
+// 卡片右上角的實心裝飾圖
+const STAR=(x,y,r)=>`<path d="M${x} ${y-r}l${r*.3} ${r*.7} ${r*.7} ${r*.3}-${r*.7} ${r*.3}-${r*.3} ${r*.7}-${r*.3}-${r*.7}-${r*.7}-${r*.3} ${r*.7}-${r*.3}z" fill="currentColor"/>`;
+const RAYS='<g stroke="currentColor" stroke-width="2" stroke-linecap="round">';
+const DECO={
+  sun:`<circle cx="12" cy="12" r="5" fill="currentColor"/>${RAYS}<path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g>`,
+  sunrise:`<path d="M5.5 18a6.5 6.5 0 0 1 13 0z" fill="currentColor"/>${RAYS}<path d="M3 20.5h18M12 5v3M5 9l1.7 1.7M19 9l-1.7 1.7M2.5 14.5h2M19.5 14.5h2"/></g>`,
+  night:`<path d="M16.5 15A7 7 0 1 1 9 5a5.4 5.4 0 0 0 7.5 10z" fill="currentColor"/>${STAR(18.5,4.5,2.2)}${STAR(21,10.5,1.4)}`,
+};
 function shiftWindow(sh,date){
   const t=state.times[sh];if(!t||!t.start||!t.end)return null;
   const [a,b]=t.start.split(':').map(Number),[c,e]=t.end.split(':').map(Number);
@@ -545,13 +553,13 @@ function renderToday(){
     if(!w)items.push({s,pl:placeOf(p),st:'',txt:''});
     else if(now<w.st)items.push({s,pl:placeOf(p),st:'',txt:`今天 ${hm(w.st)} 上班`});
     else if(now<w.en)items.push({s,pl:placeOf(p),st:'on',txt:`上班中，${hm(w.en)} 下班`});
-    else items.push({s,pl:placeOf(p),st:'done',txt:'今天的班上完了'});
+    else items.push({s,pl:placeOf(p),st:'done',txt:'今天下班了'});
   });
   $('todaycard').className='todaycard p-'+per.k;
-  let h=`<svg class="deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[per.icon]}</svg>
+  let h=`<svg class="deco" viewBox="0 0 24 24" aria-hidden="true">${DECO[per.icon]}</svg>
     <div class="lbl"><span class="greet">${per.g}</span><b>${m}月${d}日</b><span class="wd">星期${WD[NOW.getDay()]}</span></div><div class="todayshift">`;
   if(items.length)items.forEach(w=>{h+=`<div class="ts${w.st==='done'?' done':''}"><span class="chip s-${w.s}">${w.s}</span><span class="tx"><small>${esc(w.pl.label)}${w.sub?`<span class="dot">•</span>${w.sub}`:''}</small><b>${w.s} 班</b>${w.txt?`<span class="st${w.st==='on'?' on':''}">${w.txt}</span>`:(tt(w.s)?`<span class="tm">${tt(w.s)}</span>`:'')}</span></div>`});
-  else h+=`<div class="ts off"><span class="chip">${ic('moon')}</span><span class="tx"><small>${esc(meName())}</small><b>今天休息</b></span></div>`;
+  else h+=`<div class="ts off"><span class="chip">${ic('moon')}</span><span class="tx"><b>今日休息</b></span></div>`;
   h+='</div>';
   const tw=me.map(p=>({s:shiftOn(p.id,tm.getFullYear(),tm.getMonth()+1,tm.getDate()),pl:placeOf(p)})).filter(w=>w.s);
   h+=`<div class="tomorrow"><div class="tlbl"><span>明天</span><b>${tm.getMonth()+1}/${tm.getDate()}（${WD[tm.getDay()]}）</b></div><div class="tlist">${tw.length?tw.map(w=>`<div class="tw"><span class="chip s-${w.s}">${w.s}</span><span><b>${esc(w.pl.label)}<span class="dot">•</span>${w.s} 班</b>${tt(w.s)?`<small>${tt(w.s)}</small>`:''}</span></div>`).join(''):`<div class="tw off">${ic('moon')}休息</div>`}</div></div>`;
