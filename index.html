@@ -88,6 +88,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .todayshift{display:flex;flex-wrap:wrap;gap:var(--s2)}
 .ts{display:flex;align-items:center;gap:var(--s3);background:var(--glassStrong);border-radius:var(--s4);padding:var(--s2) var(--s4) var(--s2) var(--s2);font-size:1.05em;font-weight:700}
 .ts .chip{min-width:2.9em;height:2.7em;font-size:1.1em}
+.dot{display:inline-block;margin:0 .35em;color:var(--faint);font-weight:700}
 .ts .tm{display:block;font-size:.78em;color:var(--muted);font-variant-numeric:tabular-nums}
 .ts.off{color:var(--muted);padding-left:var(--s4)}
 .ts.off .ic{width:1.3em;height:1.3em;color:#8a9fd6}
@@ -349,6 +350,7 @@ const ICONS={
   calendar:'<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
   calToday:'<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M9 14.8l2 2 4-4"/>',
   down:'<path d="M12 5v14M6 13l6 6 6-6"/>',
+  work:'<rect x="3.5" y="7.5" width="17" height="12" rx="2.5"/><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5M3.5 12.5h17"/>',
   up:'<path d="M12 19V5M6 11l6-6 6 6"/>',
   check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
   undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',
@@ -496,11 +498,11 @@ function renderToday(){
   const tm=new Date(y,m-1,d+1);
   const work=me.map(p=>({s:shiftOn(p.id,y,m,d),pl:placeOf(p)})).filter(w=>w.s);
   let h=`<div class="lbl">${ic('sun')}<span>今天 <b>${m}月${d}日　星期${WD[NOW.getDay()]}</b></span></div><div class="todayshift">`;
-  if(work.length)work.forEach(w=>{const t=fmtTime(w.s);h+=`<div class="ts"><span class="chip s-${w.s}">${w.s}</span><span>${esc(w.pl.label)} ${w.s} 班${t?`<span class="tm">${t}${overnight(w.s)?'（到隔天）':''}</span>`:''}</span></div>`});
+  if(work.length)work.forEach(w=>{const t=fmtTime(w.s);h+=`<div class="ts"><span class="chip s-${w.s}">${w.s}</span><span>${esc(w.pl.label)}<span class="dot">•</span>${w.s} 班${t?`<span class="tm">${t}${overnight(w.s)?'（到隔天）':''}</span>`:''}</span></div>`});
   else h+=`<div class="ts off">${ic('moon')}${esc(meName())} 今天休息</div>`;
   h+='</div>';
   const tw=me.map(p=>({s:shiftOn(p.id,tm.getFullYear(),tm.getMonth()+1,tm.getDate()),pl:placeOf(p)})).filter(w=>w.s);
-  h+=`<div class="tomorrow"><div class="tlbl">${ic('arrowR')}明天 ${tm.getMonth()+1}/${tm.getDate()}（${WD[tm.getDay()]}）</div><div class="tlist">${tw.length?tw.map(w=>{const t=fmtTime(w.s);return `<div class="tw"><span class="chip s-${w.s}">${w.s}</span><span><b>${esc(w.pl.label)} ${w.s} 班</b>${t?`<small>${t}${overnight(w.s)?'（到隔天）':''}</small>`:''}</span></div>`}).join(''):`<div class="tw off">${ic('moon')}休息</div>`}</div></div>`;
+  h+=`<div class="tomorrow"><div class="tlbl">${ic('arrowR')}明天 ${tm.getMonth()+1}/${tm.getDate()}（${WD[tm.getDay()]}）</div><div class="tlist">${tw.length?tw.map(w=>{const t=fmtTime(w.s);return `<div class="tw"><span class="chip s-${w.s}">${w.s}</span><span><b>${esc(w.pl.label)}<span class="dot">•</span>${w.s} 班</b>${t?`<small>${t}${overnight(w.s)?'（到隔天）':''}</small>`:''}</span></div>`}).join(''):`<div class="tw off">${ic('moon')}休息</div>`}</div></div>`;
   h+=`<div class="gorow"><span class="go">看今天班表${ic('down')}</span></div>`;
   $('todaycard').innerHTML=h;
 }
@@ -514,7 +516,7 @@ function render(){
   $('prev').disabled=key(Y,M)<=firstMonth();
   $('empty').hidden=hasData(key(Y,M));
   const {total}=monthCounts();
-  $('totalBtn').innerHTML=`<span class="t1">${ic('chart')}<span>${M}月 共上班 <b>${total}</b> 天</span></span><span class="more">詳細${ic('chevR')}</span>`;
+  $('totalBtn').innerHTML=`<span class="t1">${ic('work')}<span>${M}月 共上班 <b>${total}</b> 天</span></span><span class="more">詳細${ic('chevR')}</span>`;
 
   let hh='<div></div>';
   PLACES.forEach(pl=>{hh+=`<button class="ph" data-place="${pl.id}">${esc(pl.label)}</button>`});
@@ -546,7 +548,7 @@ $('shade').onclick=closeSheet;
 
 function showTotal(){
   const {cnt,total}=monthCounts();
-  let h=`<div class="sheet-head"><h2>${ic('chart')}${M}月 上班天數</h2><button class="closex" data-close aria-label="關閉">${ic('x')}</button></div>
+  let h=`<div class="sheet-head"><h2>${ic('work')}${M}月 上班天數</h2><button class="closex" data-close aria-label="關閉">${ic('x')}</button></div>
     <p class="bigtotal">${esc(meName())} 一共上班 <b>${total}</b> 天</p>`;
   PLACES.forEach(pl=>{
     h+=`<div class="place-sum"><h3>${esc(pl.label)}</h3>${pl.shifts.map(s=>`<div class="line"><span class="chip s-${s}">${s}</span>${s} 班　${cnt[s]} 天</div>`).join('')}</div>`;
@@ -719,7 +721,7 @@ const MAIN_TOUR=[{title:'歡迎使用班表',text:'這是洪國昌的班表。�
 const HELP=[
   {icon:'sun',q:'今天上什麼班？',a:'<p>打開畫面，最上面淡黃色的卡片就會寫今天和明天上什麼班。點這張卡片，會直接跳到表格裡今天那一行。今天那一行也會用淡黃色框起來。</p>',tour:[T.today,T.todayTap,T.row]},
   {icon:'calendar',q:'怎麼看其他月份？',a:'<p>按月份兩邊的箭頭換月份。看別的月份時，會出現「回到這個月」按鈕，按一下就回來。</p>',tour:[T.month]},
-  {icon:'chart',q:'這個月上幾天班？',a:'<p>月份下面寫著一共上幾天班。點一下，可以看兩個哨所各種班上幾天。</p>',tour:[T.total]},
+  {icon:'work',q:'這個月上幾天班？',a:'<p>月份下面寫著一共上幾天班。點一下，可以看兩個哨所各種班上幾天。</p>',tour:[T.total]},
   {icon:'clock',q:'怎麼設定各班的時間？',a:'<p>打開右上角「選單」，在「設定」裡點「班別時間」，在每一種班旁邊選開始和結束的時間，按「儲存」。設好之後，今天卡片和選班的時候都會顯示時間。</p>',tour:[T.times,T.times2]},
   {icon:'grid',q:'表格怎麼看？',a:'<p>一天一行。上面一排是名字，左邊三人是第一個哨所，右邊三人是第二個哨所。寫 A、B、C、D 的是上班，寫「休」的是休息。洪國昌的兩欄字比較深，其他人比較淡。</p>',tour:[T.names,T.mine,T.row]},
   {icon:'pen',q:'怎麼修改班表？',a:'<p>先按右下角「修改班表」，再點想改的格子，選 A、B、C、D 或「休息」。改完按同一顆按鈕「儲存班表」。</p>',tour:[T.lock,T.cell,T.done]},
@@ -842,8 +844,11 @@ function showStep(){
     <h2>${s.title}</h2><p>${s.text}</p>
     <div class="row2">${tour.i>0?`<button class="big ghost" data-prev>${ic('chevL')}上一步</button>`:'<span></span>'}<button class="big" data-next>${last?ic('check')+(tour.main?'我會用了':'知道了'):'下一步'+ic('chevR')}</button></div>`;
   if(tourEl){
-    if(!tourEl.closest('.head')&&!tourEl.closest('.days')&&!tourEl.closest('.fabs'))scrollTo(0,0);
-    tourEl.scrollIntoView({block:'center'});
+    // 把要介紹的東西捲到畫面上方，說明卡放下方，避免擋住
+    if(!tourEl.closest('.fabs')){
+      const off=tourEl.closest('.days')?$('head').getBoundingClientRect().height+24:24;
+      scrollTo(0,Math.max(0,scrollY+tourEl.getBoundingClientRect().top-off));
+    }
     requestAnimationFrame(()=>requestAnimationFrame(placeRing));
   }else{$('ring').hidden=true;$('tourcard').className='tourcard bottom'}
 }
@@ -852,7 +857,9 @@ function placeRing(){
   const r=tourEl.getBoundingClientRect(),p=8,ring=$('ring');
   ring.hidden=false;
   ring.style.left=(r.left-p)+'px';ring.style.top=(r.top-p)+'px';ring.style.width=(r.width+p*2)+'px';ring.style.height=(r.height+p*2)+'px';
-  $('tourcard').className='tourcard '+((r.top+r.height/2)>innerHeight*0.5?'top':'bottom');
+  const card=$('tourcard');card.className='tourcard bottom';
+  const ch=card.offsetHeight+24,below=innerHeight-(r.bottom+p),above=r.top-p;
+  card.className='tourcard '+(below>=ch?'bottom':above>=ch?'top':(below>=above?'bottom':'top'));
 }
 $('tourcard').addEventListener('click',e=>{
   if(!tour)return;
