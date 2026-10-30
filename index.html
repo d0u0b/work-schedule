@@ -56,11 +56,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .brand h1{margin:0;font-size:1.3em;font-weight:900;letter-spacing:.02em}
 
 /* 工具列 */
-.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s2)}
+.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
 .tool{min-height:56px;border-radius:var(--s4);font-size:16px;font-weight:700;white-space:nowrap;
   display:flex;align-items:center;justify-content:center;gap:var(--s1);padding:0 var(--s2)}
 .tool .ic{width:20px;height:20px}
-.tool.lock.editing{background:var(--edit);border-color:var(--editInk);color:var(--editInk)}
 @media (max-width:340px){.tool .ic{display:none}}
 
 /* 今天 */
@@ -84,10 +83,11 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .s-C{background:var(--sC);color:var(--sC-ink)} .s-D{background:var(--sD);color:var(--sD-ink)}
 
 /* 放到桌面 */
-.installcard{border-radius:var(--s5);padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
-.installcard .msg{display:flex;gap:var(--s3);align-items:flex-start;margin:0}
-.installcard .msg .ic{width:2em;height:2em;color:var(--accent);flex:none}
-.installcard .row2 .big{min-height:52px}
+.ask{align-items:center;text-align:center}
+.ask svg.lgo{width:96px;height:96px;filter:drop-shadow(0 8px 16px rgba(61,140,206,.25))}
+.ask h2{justify-content:center}
+.ask p{margin:0;line-height:1.7;color:var(--muted)}
+.ask .big{width:100%}
 
 /* 月份 */
 .monthbox{border-radius:var(--s5);padding:var(--s3);display:flex;flex-direction:column;gap:var(--s3)}
@@ -121,11 +121,15 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .tblock{display:flex;flex-direction:column;gap:var(--s2);background:var(--accentSoft);border-radius:var(--s4);padding:var(--s3)}
 .th{display:flex;align-items:center;gap:var(--s2);font-weight:700}
 .th .chip{min-width:40px;height:40px;font-size:20px}
-.trow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:end;gap:var(--s2)}
-.trow label{display:flex;flex-direction:column;gap:var(--s1);font-size:.85em;color:var(--muted);font-weight:700;min-width:0}
-.trow .to{padding-bottom:var(--s3)}
-.trow .to{color:var(--muted);font-weight:700}
-.sheet .trow input{height:56px;font-size:19px;padding:0 var(--s2);font-variant-numeric:tabular-nums;color:var(--ink)}
+.tlab,.trow{display:grid;grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr) 48px;align-items:center;gap:var(--s2)}
+.tlab{font-size:.85em;color:var(--muted);font-weight:700;margin-bottom:calc(var(--s1) * -1)}
+.trow .to{color:var(--muted);font-weight:700;text-align:center}
+.sheet .trow input{display:block;width:100%;min-width:0;max-width:100%;height:56px;font-size:18px;padding:0 var(--s1);font-variant-numeric:tabular-nums;color:var(--ink);
+  -webkit-appearance:none;appearance:none;text-align:center;line-height:56px}
+.sheet .trow input::-webkit-date-and-time-value{text-align:center}
+.sheet .trow input::-webkit-calendar-picker-indicator{display:none}
+.tclr{width:48px;height:56px;border-radius:var(--s3);border:1px solid var(--line);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;padding:0}
+.tclr .ic{width:22px;height:22px}
 .sheet .note{margin:calc(var(--s2) * -1) 0 0;color:var(--muted);line-height:1.6}
 
 /* 名字列（黏在上面） */
@@ -172,7 +176,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .fab{pointer-events:auto;min-height:60px;border-radius:999px;font-size:17px;font-weight:700;padding:0 var(--s5) 0 var(--s4);display:flex;align-items:center;gap:var(--s2)}
 .fab .ic{width:24px;height:24px}
 .fab.top{background:var(--glassStrong);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--line);color:var(--accent);box-shadow:0 8px 24px rgba(61,140,206,.25)}
-.fab.lock{border:0;background:var(--editInk);color:#fff;min-height:64px;font-size:18px;box-shadow:0 8px 24px rgba(194,103,74,.35)}
+.fab.lock{border:0;background:var(--accent);color:#fff;min-height:64px;font-size:18px;box-shadow:0 8px 24px rgba(61,140,206,.35)}
+.fab.lock.editing{background:var(--editInk);box-shadow:0 8px 24px rgba(194,103,74,.35)}
 
 /* 底部選單 */
 .shade{position:fixed;inset:0;background:rgba(43,66,88,.4);z-index:20}
@@ -214,7 +219,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .kbd{display:inline-flex;align-items:center;justify-content:center;min-width:1.6em;padding:0 var(--s1);border-radius:var(--s1);background:var(--accentSoft);font-weight:900}
 
 .toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(var(--s4) + env(safe-area-inset-top,0px));z-index:30;
-  background:var(--ink);color:#fff;padding:var(--s2) var(--s4);border-radius:999px;font-size:1.02em;font-weight:700;display:flex;align-items:center;gap:var(--s2);white-space:nowrap;max-width:calc(100vw - var(--s5));box-shadow:0 8px 24px rgba(43,66,88,.3)}
+  background:var(--ink);color:#fff;padding:var(--s2) var(--s4);border-radius:999px;font-size:1.02em;font-weight:700;display:flex;align-items:center;gap:var(--s2);max-width:calc(100vw - var(--s5));width:max-content;box-shadow:0 8px 24px rgba(43,66,88,.3)}
 .toast.has-undo{padding-right:var(--s2)}
 .toast span{overflow:hidden;text-overflow:ellipsis}
 .toast button{border:0;border-radius:999px;background:#fff;color:var(--ink);font-size:1em;font-weight:700;min-height:44px;padding:0 var(--s4);display:flex;align-items:center;gap:var(--s1);margin-left:var(--s1)}
@@ -264,22 +269,16 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
   <header class="brand"><svg viewBox="0 0 512 512" data-logo aria-hidden="true"></svg><h1 id="appTitle">洪國昌的班表</h1></header>
 
   <div class="tools">
-    <button class="tool glass lock" id="lockBtn"></button>
     <button class="tool glass" id="fontBtn"></button>
     <button class="tool glass" id="helpBtn"><i data-icon="help"></i>使用說明</button>
   </div>
 
   <section class="todaycard" id="todaycard"></section>
 
-  <section class="installcard glass" id="installcard" hidden>
-    <p class="msg"><i data-icon="phone"></i><span><b>把班表放到手機桌面</b><br>下次點桌面上的「班表」圖示就能打開。</span></p>
-    <div class="row2"><button class="big" id="installBtn"><i data-icon="phone"></i>放到桌面</button><button class="big ghost" id="installLater">以後再說</button></div>
-  </section>
-
   <section class="monthbox glass" id="monthbox">
     <div class="top" id="monthnav">
       <button class="nav" id="prev" aria-label="上個月"><i data-icon="chevL"></i></button>
-      <div class="month"><span class="yr" id="ytitle">2026 年</span><b><i data-icon="calendar"></i><span id="mtitle">11 月</span></b></div>
+      <div class="month"><span class="yr" id="ytitle">2026 年</span><b><span id="mtitle">11 月</span></b></div>
       <button class="nav" id="next" aria-label="下個月"><i data-icon="chevR"></i></button>
     </div>
     <button class="total" id="totalBtn"></button>
@@ -287,7 +286,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
   </section>
 
   <section class="empty glass" id="empty" hidden>
-    <p><i data-icon="info"></i><span><b>這個月還沒排班。</b>按上面的「開始修改」之後，可以直接點格子排，或先照上個月複製一份再改。</span></p>
+    <p><i data-icon="info"></i><span><b>這個月還沒排班。</b>按右下角的「開始修改」之後，可以直接點格子排，或先照上個月複製一份再改。</span></p>
     <button class="big" id="copyPrev"><i data-icon="copy"></i>照上個月複製</button>
   </section>
 
@@ -304,11 +303,11 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 
 <div class="fabs">
   <button class="fab top" id="topBtn" hidden><i data-icon="up"></i>回到最上面</button>
-  <button class="fab lock" id="fab" hidden><i data-icon="lock"></i>完成，鎖定</button>
+  <button class="fab lock" id="fab"></button>
 </div>
 <div class="shade" id="shade" hidden></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true"></div>
-<div class="toast" id="toast" hidden role="status"><i data-icon="check"></i><span id="toastText"></span><button id="undoBtn" hidden><i data-icon="undo"></i>復原</button></div>
+<div class="toast" id="toast" hidden role="status"><span id="toastIcon" style="display:flex"></span><span id="toastText"></span><button id="undoBtn" hidden><i data-icon="undo"></i>復原</button></div>
 
 <div class="tourblock" id="tourblock" hidden></div>
 <div class="ring" id="ring" hidden></div>
@@ -384,14 +383,13 @@ function persist(){ls.set(KEY,JSON.stringify(state))}
 let editing=false;
 function setEditing(v){
   editing=v;
-  $('lockBtn').classList.toggle('editing',v);
-  $('lockBtn').innerHTML=v?ic('lock')+'完成鎖定':ic('pen')+'開始修改';
-  $('fab').hidden=!v;
+  $('fab').classList.toggle('editing',v);
+  $('fab').innerHTML=v?ic('lock')+'完成，鎖定':ic('pen')+'開始修改';
   $('editbar').hidden=!v;
   document.documentElement.classList.toggle('editing-on',v);
 }
 function toggleEdit(){setEditing(!editing);toast(editing?'現在可以修改了':'已鎖定並儲存',false)}
-$('lockBtn').onclick=toggleEdit;$('fab').onclick=toggleEdit;
+$('fab').onclick=toggleEdit;
 let bigText=ls.get(FONT_KEY)==='big';
 function setFont(v){
   bigText=v;document.documentElement.classList.toggle('bigtext',v);
@@ -534,11 +532,14 @@ function showTimes(){
   let h=`<div class="sheet-head"><h2>${ic('clock')}班別時間</h2><button class="closex" data-close>${ic('x')}關閉</button></div>
     <p class="note">設定每一種班從幾點到幾點。點時間的格子就能選。不知道的可以先空著。</p>`;
   SHIFTS.forEach(s=>{const t=state.times[s]||{};
-    h+=`<div class="tblock"><div class="th"><span class="chip s-${s}">${s}</span>${s} 班</div><div class="trow"><label>開始<input type="time" id="t-${s}-start" value="${t.start||''}"></label><span class="to">到</span><label>結束<input type="time" id="t-${s}-end" value="${t.end||''}"></label></div></div>`});
+    h+=`<div class="tblock"><div class="th"><span class="chip s-${s}">${s}</span>${s} 班</div><div class="tlab"><span>開始</span><span></span><span>結束</span><span></span></div><div class="trow"><input type="time" id="t-${s}-start" value="${t.start||''}" aria-label="${s} 班開始"><span class="to">到</span><input type="time" id="t-${s}-end" value="${t.end||''}" aria-label="${s} 班結束"><button class="tclr" data-clr="${s}" aria-label="清除 ${s} 班時間">${ic('x')}</button></div></div>`});
+  h+=`<button class="big ghost" data-reset>${ic('undo')}全部重置</button>`;
   h+=`<div class="row2"><button class="big" data-ok>${ic('check')}儲存</button><button class="big ghost" data-close>${ic('x')}取消</button></div>`;
   openSheet(h,e=>{
     const b=e.target.closest('button');if(!b)return;
     if(b.hasAttribute('data-close'))return closeSheet();
+    if(b.dataset.clr){$(`t-${b.dataset.clr}-start`).value='';$(`t-${b.dataset.clr}-end`).value='';return}
+    if(b.hasAttribute('data-reset')){SHIFTS.forEach(x=>{$(`t-${x}-start`).value='';$(`t-${x}-end`).value=''});toast('已全部清空，按「儲存」才會生效',false,'undo');return}
     if(b.hasAttribute('data-ok')){
       const nt={};SHIFTS.forEach(s=>{const a=$(`t-${s}-start`).value,z=$(`t-${s}-end`).value;if(a||z)nt[s]={start:a,end:z}});
       closeSheet();
@@ -548,7 +549,7 @@ function showTimes(){
   });
 }
 $('legend').onclick=showTimes;
-function needUnlock(){toast('要修改，請先按「開始修改」',false)}
+function needUnlock(){toast('請先按右下角「開始修改」',false,'pen')}
 
 $('days').addEventListener('click',e=>{const c=e.target.closest('[data-p]');if(!c)return;if(!editing)return needUnlock();pickShift(c.dataset.p,+c.dataset.d)});
 $('head').addEventListener('click',e=>{const n=e.target.closest('[data-rename]');if(!n)return;if(!editing)return needUnlock();rename(n.dataset.rename)});
@@ -567,8 +568,9 @@ $('copyPrev').onclick=()=>{
 $('undoBtn').onclick=()=>{if(!undoData)return;state=JSON.parse(undoData);undoData=null;persist();render();toast('已復原',false)};
 
 let tt;
-function toast(t,canUndo){
+function toast(t,canUndo,icon){
   const u=!!(canUndo&&undoData);
+  $('toastIcon').innerHTML=ic(icon||'check');
   $('toastText').textContent=t;$('undoBtn').hidden=!u;$('toast').classList.toggle('has-undo',u);$('toast').hidden=false;
   clearTimeout(tt);tt=setTimeout(()=>{$('toast').hidden=true},u?6000:2200);
 }
@@ -576,18 +578,30 @@ function toast(t,canUndo){
 /* ---------- 放到手機桌面（PWA） ---------- */
 let installPrompt=null;
 const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-function updateInstallCard(){$('installcard').hidden=isStandalone()||ls.get(INSTALL_KEY)==='1'}
-addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;updateInstallCard()});
-addEventListener('appinstalled',()=>{installPrompt=null;ls.set(INSTALL_KEY,'1');updateInstallCard();toast('已放到手機桌面',false)});
+const askedAlready=()=>isStandalone()||ls.get(INSTALL_KEY)==='1';
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e});
+addEventListener('appinstalled',()=>{installPrompt=null;ls.set(INSTALL_KEY,'1');closeSheet();toast('已放到手機桌面',false,'phone')});
+function askInstall(){
+  if(askedAlready()||tour||!$('sheet').hidden)return;
+  openSheet(`<div class="ask" style="display:flex;flex-direction:column;gap:var(--s4)"><svg class="lgo" viewBox="0 0 512 512">${LOGO.replace(/\blg\b/g,'lgask')}</svg>
+    <h2>要把班表放到手機桌面嗎？</h2>
+    <p>放到桌面後，點「班表」圖示就能打開，跟 App 一樣方便。</p>
+    <button class="big" data-yes>${ic('phone')}好，放到桌面</button>
+    <button class="big ghost" data-later>以後再說</button></div>`,
+  e=>{
+    const b=e.target.closest('button');if(!b)return;
+    if(b.hasAttribute('data-yes')){closeSheet();doInstall()}
+    if(b.hasAttribute('data-later')){ls.set(INSTALL_KEY,'1');closeSheet();startTour([T.installLater],false)}
+  });
+}
+function maybeAskInstall(){if(!askedAlready())setTimeout(askInstall,installPrompt?300:1500)}
 async function doInstall(){
   if(installPrompt){
     installPrompt.prompt();
-    try{const r=await installPrompt.userChoice;if(r.outcome==='accepted'){ls.set(INSTALL_KEY,'1');updateInstallCard()}}catch(e){}
+    try{const r=await installPrompt.userChoice;if(r.outcome==='accepted')ls.set(INSTALL_KEY,'1')}catch(e){}
     installPrompt=null;
   }else showHelp(HELP.findIndex(h=>h.id==='install'));
 }
-$('installBtn').onclick=doInstall;
-$('installLater').onclick=()=>{ls.set(INSTALL_KEY,'1');updateInstallCard();startTour([T.installLater],false)};
 if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){
   addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{})});
 }
@@ -601,9 +615,9 @@ const T={
   total:{el:()=>$('totalBtn'),title:'這個月上幾天',text:'這裡寫這個月一共上幾天班。點一下可以看每一種班各幾天。'},
   row:{el:exampleRow,title:'一天一行',text:'每一行是一天。有顏色的格子是上班，寫 A、B、C、D；寫「休」的是休息。今天那一行會用黃色框起來。'},
   names:{el:()=>$('head'),title:'誰的班',text:'最上面這一排是名字。左邊三個人是第一處，右邊三個人是第二處。往下滑的時候，名字會一直留在上面。'},
-  lock:{el:()=>$('lockBtn'),title:'先按「開始修改」',text:'平常是鎖住的，不會不小心改到。要改的時候，先按這個「開始修改」。'},
+  lock:{el:()=>$('fab'),title:'先按「開始修改」',text:'平常是鎖住的，不會不小心改到。要改的時候，按右下角這個「開始修改」。不管滑到哪裡，它都會在右下角。'},
   cell:{el:exampleCell,title:'點格子改班',text:'開始修改之後，點想改的格子，下面會跳出 A、B、C、D 和「休息」，選一個就改好了。'},
-  done:{el:()=>$('fab'),show:'fab',title:'改完記得鎖定',text:'修改的時候，右下角會出現一顆「完成，鎖定」按鈕。改完按它，就會鎖住並儲存，不用滑回最上面。'},
+  done:{el:()=>$('fab'),title:'改完記得鎖定',text:'開始修改之後，右下角的按鈕會變成橘色的「完成，鎖定」。改完按它，就會鎖住並儲存。'},
   undo:{el:exampleCell,title:'改錯了沒關係',text:'每次改完，畫面上方會出現一行字，旁邊有「復原」按鈕。按一下，就會回到改之前的樣子。'},
   toTop:{el:()=>$('topBtn'),show:'topBtn',title:'回到最上面',text:'往下滑到比較下面的時候，右下角會出現「回到最上面」按鈕。按一下就會回到最上面。'},
   times:{el:()=>$('legend'),title:'班別時間',text:'這張卡片寫 A、B、C、D 每一種班是幾點到幾點。點一下就可以設定時間。'},
@@ -626,7 +640,7 @@ const HELP=[
   {icon:'chart',q:'這個月上幾天班？',a:'<p>月份下面寫著一共上幾天班。點一下，可以看第一處、第二處各種班上幾天。</p>',tour:[T.total]},
   {icon:'clock',q:'怎麼設定各班的時間？',a:'<p>點表格上方的「班別時間」卡片，在每一種班旁邊選開始和結束的時間，按「儲存」。設好之後，今天卡片和選班的時候都會顯示時間。</p>',tour:[T.times,T.times2]},
   {icon:'grid',q:'表格怎麼看？',a:'<p>一天一行。上面一排是名字，左邊三人是第一處，右邊三人是第二處。有顏色、寫 A、B、C、D 的是上班，寫「休」的是休息。</p>',tour:[T.names,T.row]},
-  {icon:'pen',q:'怎麼修改班表？',a:'<p>先按左上角「開始修改」，再點想改的格子，選 A、B、C、D 或「休息」。改完按右下角「完成，鎖定」。</p>',tour:[T.lock,T.cell,T.done]},
+  {icon:'pen',q:'怎麼修改班表？',a:'<p>先按右下角「開始修改」，再點想改的格子，選 A、B、C、D 或「休息」。改完按同一顆按鈕「完成，鎖定」。</p>',tour:[T.lock,T.cell,T.done]},
   {icon:'undo',q:'改錯了怎麼辦？',a:'<p>改完後，畫面上方會出現「復原」按鈕，按一下就會回到改之前的樣子。</p>',tour:[T.undo]},
   {icon:'copy',q:'新的月份怎麼排班？',a:'<p>換到新的月份，按「開始修改」，再按「照上個月複製」，把上個月的排法帶過來，再挑要改的格子修改。</p>',tour:[T.nextMonth,T.lock,T.copy]},
   {icon:'user',q:'名字寫錯了怎麼改？',a:'<p>按「開始修改」後，點最上面的名字，改好按「儲存」。</p>',tour:[T.lock,T.rename]},
@@ -662,9 +676,9 @@ function showHelp(open){
 $('helpBtn').onclick=()=>showHelp(-1);
 
 let tour=null,tourEl=null,tourShown=null;
-function restoreShown(){if(tourShown){const e=tourShown;tourShown=null;if(e.id==='fab')e.hidden=!editing;else updateTopBtn()}}
+function restoreShown(){if(tourShown){tourShown=null;updateTopBtn()}}
 function startTour(steps,main){closeSheet();$('toast').hidden=true;tour={steps,main,i:0};showStep()}
-function endTour(){restoreShown();if(tour&&tour.main)ls.set(TOUR_KEY,'1');tour=null;tourEl=null;$('tourblock').hidden=true;$('ring').hidden=true;$('tourcard').hidden=true}
+function endTour(){restoreShown();const wasMain=tour&&tour.main;if(wasMain){ls.set(TOUR_KEY,'1');setTimeout(maybeAskInstall,0)}tour=null;tourEl=null;$('tourblock').hidden=true;$('ring').hidden=true;$('tourcard').hidden=true}
 function visible(el){if(!el)return false;const r=el.getBoundingClientRect();return r.width>0&&r.height>0}
 function showStep(){
   const s=tour.steps[tour.i],n=tour.steps.length,last=tour.i===n-1;
@@ -709,12 +723,12 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncToday(
 addEventListener('hashchange',()=>{lastDay='';syncToday()});
 
 /* ---------- 啟動 ---------- */
-setEditing(false);setFont(bigText);render();updateInstallCard();updateTopBtn();
+setEditing(false);setFont(bigText);render();updateTopBtn();
 const shown=Date.now();
 Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,1500))]).then(()=>{
   setTimeout(()=>{
     $('splash').classList.add('hide');setTimeout(()=>{$('splash').hidden=true},400);
-    if(!ls.get(TOUR_KEY))setTimeout(()=>startTour(MAIN_TOUR,true),450);
+    if(!ls.get(TOUR_KEY))setTimeout(()=>startTour(MAIN_TOUR,true),450);else maybeAskInstall();
   },Math.max(0,600-(Date.now()-shown)));
 });
 </script>
