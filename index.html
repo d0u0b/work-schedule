@@ -22,16 +22,16 @@
 :root{
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px;
   --bg:#eaf5fd; --bgTop:#dff0fc; --bgBottom:#f8fbff;
-  --glass:rgba(255,255,255,.74); --glassStrong:rgba(255,255,255,.92); --headBg:rgba(234,245,253,.9);
-  --ink:#2b4258; --muted:#5f7489; --faint:#a3b7c9; --line:rgba(98,155,205,.28);
-  --accent:#3d8cce; --accent-ink:#ffffff; --accentSoft:rgba(125,189,236,.24); --meBg:rgba(150,205,245,.38); --meLine:#8ec2ea;
-  --sun:#d46c64; --sat:#4c9670; --today:rgba(255,242,190,.78); --todayLine:#ecca5e;
+  --glass:#ffffff; --glassStrong:#ffffff; --headBg:rgba(234,245,253,.94);
+  --ink:#2b4258; --muted:#5f7489; --faint:#a3b7c9; --line:#dce9f5;
+  --accent:#3d8cce; --accent-ink:#ffffff; --accentSoft:#e6f2fc; --meBg:#dcecfa; --meLine:#8ec2ea;
+  --sun:#d46c64; --sat:#4c9670; --today:#e6f2fc; --todayLine:#3d8cce;
   --edit:#ffe8de; --editInk:#c2674a;
   --sA:#cfe5fb; --sA-ink:#255f96;
   --sB:#f9d8e3; --sB-ink:#a0405f;
   --sC:#cdeee6; --sC-ink:#1f7062;
   --sD:#e3dafa; --sD-ink:#57439e;
-  --shadow:0 8px 24px rgba(61,140,206,.12);
+  --shadow:0 6px 20px rgba(61,140,206,.09);
   --font:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
   --fs:18px; --cellH:56px; --cellF:26px; --dtF:22px; --nmF:clamp(12px,3.7vw,16px);
   color-scheme:light;
@@ -49,13 +49,18 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 button{font-family:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .ic{width:1.1em;height:1.1em;flex:none;display:inline-block;vertical-align:-.15em}
-.glass{background:var(--glass);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--line);box-shadow:var(--shadow)}
+.glass{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
 
 /* 標題 */
 .brand{display:flex;align-items:center;gap:var(--s3);padding-top:var(--s2)}
 .brand h1{flex:1;min-width:0}
-.brand > svg{width:44px;height:44px;flex:none;filter:drop-shadow(0 4px 8px rgba(61,140,206,.25))}
-.brand h1{margin:0;font-size:1.25em;font-weight:900;letter-spacing:.02em;line-height:1.3}
+.hello{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--s2)}
+.hdate{margin:0;color:var(--ink);font-weight:900;font-size:1.25em;line-height:1.3;font-variant-numeric:tabular-nums}
+.hdate span{color:var(--muted);font-weight:700;font-size:.8em;margin-left:var(--s2)}
+.brand h1{margin:0;font-size:1.45em;font-weight:900;letter-spacing:.02em;line-height:1.25;display:flex;align-items:center;gap:var(--s2)}
+.brand h1 .gi{width:1em;height:1em;flex:none}
+.brand.p-morning .gi{color:#f08a5d}.brand.p-noon .gi{color:#efb022}.brand.p-night .gi{color:#6f74e0}
+.brand{padding:var(--s5) var(--s1) var(--s3)}
 
 /* 工具列 */
 .tools{display:flex;align-items:center;gap:var(--s2);flex:none}
@@ -75,49 +80,57 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 @media (max-width:360px){.tool{width:60px;font-size:12px}}
 
 /* 今天 */
-.todaycard{--c1:#fffbe9;--c2:#fff0bd;--cl:rgba(230,190,80,.55);--cs:rgba(214,170,40,.18);--cd:rgba(240,185,40,.25);--cg:#f4ca52;--cgi:#5a4200;--cgo:#7a5c0a;--csep:rgba(200,160,40,.3);
-  position:relative;overflow:hidden;background:linear-gradient(155deg,var(--c1) 0%,var(--c2) 100%);border:1px solid var(--cl);border-radius:var(--s5);
-  padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3);box-shadow:0 10px 28px var(--cs);cursor:pointer;-webkit-tap-highlight-color:transparent}
-/* 早上：淡桃粉；晚上：淡薰衣草藍 */
-.todaycard.p-morning{--c1:#fff6f1;--c2:#ffe1d3;--cl:rgba(240,165,135,.5);--cs:rgba(230,140,110,.16);--cd:rgba(245,150,110,.28);--cg:#f6a988;--cgi:#5c2a14;--cgo:#94492a;--csep:rgba(220,140,110,.3)}
-.todaycard.p-night{--c1:#f3f3ff;--c2:#dfe2fb;--cl:rgba(140,150,220,.5);--cs:rgba(110,120,200,.18);--cd:rgba(125,135,215,.3);--cg:#a9b1ef;--cgi:#26306e;--cgo:#3f4a9a;--csep:rgba(130,140,210,.3)}
+.todaycard{background:#fff;border:1px solid var(--line);border-radius:var(--s5);padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3);box-shadow:var(--shadow);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .todaycard:active{transform:scale(.99)}
-.todaycard .deco{position:absolute;right:-18px;top:-18px;width:116px;height:116px;color:var(--cd);pointer-events:none}
-.todaycard .lbl{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap;position:relative}
-.todaycard .greet{background:var(--cg);color:var(--cgi);font-weight:900;font-size:1.05em;border-radius:999px;padding:0 var(--s3);line-height:1.8;letter-spacing:.06em}
-.todaycard .lbl b{font-size:1.2em;font-weight:900}
-.todaycard .lbl .wd{color:var(--muted);font-weight:700}
-.todayshift{display:flex;flex-direction:column;gap:var(--s2);position:relative}
-.ts{display:flex;align-items:center;gap:var(--s3);background:rgba(255,255,255,.9);border-radius:var(--s4);padding:var(--s3);box-shadow:0 2px 8px rgba(200,160,40,.1)}
-.ts .chip{width:64px;height:64px;font-size:32px;border-radius:var(--s4);flex:none}
-.ts .tx{display:flex;flex-direction:column;line-height:1.3;min-width:0}
-.ts .tx small{font-size:.85em;color:var(--muted);font-weight:700}
-.ts .tx b{font-size:1.3em;font-weight:900}
-.ts .tm{font-size:.85em;color:var(--muted);font-variant-numeric:tabular-nums}
-.ts .st{font-size:.9em;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
-.ts .st.on{color:#1f7a55;display:inline-flex;align-items:center;gap:var(--s2)}
-.ts .st.on::before{content:"";flex:none;width:8px;height:8px;margin-left:2px;border-radius:50%;background:#2fa36f;box-shadow:0 0 0 3px rgba(47,163,111,.2)}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s2);margin:0}
+.sec-h b{font-size:1em;font-weight:900;letter-spacing:.04em}
+.sec-h span{font-size:.85em;color:var(--muted);font-weight:700}
+.slots{display:flex;flex-direction:column;gap:var(--s2)}
+.slot{display:flex;align-items:stretch;border-radius:var(--s4);background:#f3f8fd;overflow:hidden}
+.slot .info{flex:1;min-width:0;display:flex;align-items:center;gap:var(--s3);padding:var(--s3)}
+.slot .chip{width:60px;height:60px;font-size:30px;border-radius:var(--s3);flex:none}
+.slot .tx{display:flex;flex-direction:column;line-height:1.3;min-width:0}
+.slot .tx b{font-size:1.2em;font-weight:900}
+.slot .tx small{font-size:.85em;color:var(--muted);font-weight:700}
+.slot .st{font-size:.88em;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.slot .st.on{color:#1f7a55;display:inline-flex;align-items:center;gap:var(--s2)}
+.slot .st.on::before{content:"";flex:none;width:8px;height:8px;margin-left:2px;border-radius:50%;background:#2fa36f;box-shadow:0 0 0 3px rgba(47,163,111,.2)}
 @media (prefers-reduced-motion:no-preference){
-  .ts .st.on::before{animation:ripple 1.8s ease-out infinite}
+  .slot .st.on::before{animation:ripple 1.8s ease-out infinite}
   @keyframes ripple{0%{box-shadow:0 0 0 0 rgba(47,163,111,.55)}70%{box-shadow:0 0 0 8px rgba(47,163,111,0)}100%{box-shadow:0 0 0 0 rgba(47,163,111,0)}}
 }
-.ts.done{opacity:.75}
-.ts.off .chip{background:#e7eafb;color:#7d8ad0}
-.ts.off .chip .ic{width:30px;height:30px}
+.slot.now{background:var(--accentSoft);box-shadow:inset 4px 0 0 var(--accent)}
+.slot.done{opacity:.6}
+.slot.off .info{color:var(--muted);font-weight:700;font-size:1.1em}
+.slot.off .chip{background:#e6edf8;color:#6f8fb8}
+.slot.off .chip .ic{width:26px;height:26px}
+.tmr{display:flex;flex-direction:column;gap:var(--s2);padding-top:var(--s3);border-top:1px dashed var(--line)}
+.tmr .sec-h b{color:var(--muted);font-size:.9em}
+.slot.small{background:transparent;border:1px solid var(--line);font-size:.88em;color:var(--muted)}
+.slot.small .info{padding:var(--s2) var(--s3);gap:var(--s2)}
+.slot.small .chip{width:32px;height:32px;font-size:16px;opacity:.7}
+.slot.small .tx b{font-size:1em;color:var(--muted)}
+.slot.small .tx small{font-size:.85em;font-weight:500;font-variant-numeric:tabular-nums}
+.slot.small.off .info{font-size:1em}
+.slot.small.off .chip .ic{width:18px;height:18px}
 .dot{display:inline-block;margin:0 .35em;color:var(--faint);font-weight:700}
-.tomorrow{display:flex;align-items:center;gap:var(--s3);background:rgba(255,255,255,.55);border-radius:var(--s4);padding:var(--s2) var(--s3);position:relative}
-.tomorrow .tlbl{display:flex;flex-direction:column;line-height:1.25;color:var(--muted);font-weight:700;font-size:.9em;flex:none;padding-right:var(--s3);border-right:1px solid var(--csep)}
-.tomorrow .tlbl b{color:var(--ink);font-size:1.05em}
-.tomorrow .tlist{display:flex;flex-direction:column;gap:var(--s2);min-width:0}
-.tomorrow .tw{display:flex;align-items:center;gap:var(--s2)}
-.tomorrow .tw .chip{width:36px;height:36px;font-size:18px;flex:none;border-radius:var(--s2)}
-.tomorrow .tw > span{display:flex;flex-direction:column;line-height:1.25;min-width:0}
-.tomorrow .tw b{font-weight:900}
-.tomorrow .tw small{font-size:.76em;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.01em}
-.tomorrow .tw.off{color:var(--muted);font-weight:700}
-.tomorrow .tw.off .ic{width:1.3em;height:1.3em;color:#7d8ad0}
-.todaycard .go{display:flex;align-items:center;justify-content:center;gap:var(--s1);min-height:44px;border-radius:var(--s3);background:rgba(255,255,255,.7);color:var(--cgo);font-weight:700;font-size:.95em;position:relative}
+.todaycard .go{display:flex;align-items:center;justify-content:center;gap:var(--s1);min-height:48px;border-radius:var(--s3);background:var(--accentSoft);color:var(--accent);font-weight:700;font-size:.95em}
 .todaycard .go .ic{width:1.1em;height:1.1em}
+
+/* 這一週 */
+.week{background:#fff;border:1px solid var(--line);border-radius:var(--s5);padding:var(--s3) var(--s3) var(--s4);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:var(--s3)}
+.week .sec-h{padding:0 var(--s1)}
+.wk{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--s1)}
+.wd-b{border:0;background:none;padding:var(--s2) 0;border-radius:var(--s4);display:flex;flex-direction:column;align-items:center;gap:var(--s1);line-height:1.1;min-width:0}
+.wd-b small{font-size:.8em;color:var(--muted);font-weight:700}
+.wd-b b{font-size:1.15em;font-weight:900;font-variant-numeric:tabular-nums}
+.wd-b.sun small,.wd-b.sun b{color:var(--sun)} .wd-b.sat small,.wd-b.sat b{color:var(--sat)}
+.wd-b .wc{margin-top:var(--s1);width:32px;height:32px;border-radius:var(--s2);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px}
+.wd-b .wc.rest{color:var(--faint);font-size:13px;font-weight:700;background:#f1f6fb}
+.wd-b.today{background:var(--accent);box-shadow:0 6px 16px rgba(61,140,206,.3)}
+.wd-b.today small,.wd-b.today b{color:#fff}
+.wd-b.today .wc{box-shadow:0 0 0 2px #fff}
+.wd-b.today .wc.rest{background:rgba(255,255,255,.2);color:#fff;box-shadow:none}
 
 .chip{display:inline-flex;align-items:center;justify-content:center;border-radius:var(--s3);font-weight:900}
 .s-A{background:var(--sA);color:var(--sA-ink)} .s-B{background:var(--sB);color:var(--sB-ink)}
@@ -206,7 +219,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .cell.other{opacity:.45}
 .nm.other{opacity:.6}
 .editing-on .cell{border:1.5px dashed var(--editInk)}
-.day.today{background:var(--today);outline:3px solid var(--todayLine);outline-offset:2px}
+.day.today{background:var(--today);outline:2px solid var(--todayLine);outline-offset:2px}
 
 .foot{font-size:.9em;color:var(--muted);text-align:center;margin:var(--s2) 0 0}
 
@@ -312,13 +325,15 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 </div>
 
 <div class="wrap" id="app">
-  <header class="brand"><svg viewBox="0 0 512 512" data-logo aria-hidden="true"></svg><h1 id="appTitle">洪國昌的班表</h1>
+  <header class="brand"><div class="hello"><p class="hdate" id="hdate"></p><h1 id="appTitle">洪國昌的班表</h1></div>
     <div class="tools">
       <button class="tool glass" id="menuBtn" aria-haspopup="dialog"><i data-icon="menu"></i>選單</button>
     </div>
   </header>
 
   <section class="todaycard" id="todaycard" role="button" tabindex="0" aria-label="跳到表格裡的今天"></section>
+
+  <section class="week" id="week"></section>
 
   <section class="monthbox glass" id="monthbox">
     <div class="top" id="monthnav">
@@ -554,33 +569,52 @@ function renderToday(){
   const y=NOW.getFullYear(),m=NOW.getMonth()+1,d=NOW.getDate();
   const today=new Date(y,m-1,d),yest=new Date(y,m-1,d-1),tm=new Date(y,m-1,d+1);
   const per=dayPeriod(now);
-  const tt=s=>{const t=fmtTime(s);return t?t+(overnight(s)?'（到隔天）':''):''};
-  // 昨天開始、現在還沒下班的夜班
+  // 打招呼
+  $('hdate').innerHTML=`${m}月${d}日<span>星期${WD[NOW.getDay()]}</span>`;
+  $('appTitle').innerHTML=`<svg class="gi" viewBox="0 0 24 24" aria-hidden="true">${DECO[per.icon]}</svg>${per.g}`;
+  document.querySelector('.brand').className='brand p-'+per.k;
+  // 今天的班
+  const tt=x=>{const t=fmtTime(x);return t?t+(overnight(x)?'（到隔天）':''):''};
   const items=[];
   me.forEach(p=>{const s=shiftOn(p.id,yest.getFullYear(),yest.getMonth()+1,yest.getDate());const w=s&&shiftWindow(s,yest);
-    if(w&&now>=w.st&&now<w.en)items.push({s,pl:placeOf(p),st:'on',txt:`上班中，${hm(w.en)} 下班`,sub:'昨天晚上開始'})});
+    if(w&&now>=w.st&&now<w.en)items.push({s,pl:placeOf(p),cls:'now',st:'on',txt:`上班中，${hm(w.en)} 下班`,sub:'昨天晚上開始'})});
   me.forEach(p=>{const s=shiftOn(p.id,y,m,d);if(!s)return;const w=shiftWindow(s,today);
-    if(!w)items.push({s,pl:placeOf(p),st:'',txt:''});
-    else if(now<w.st)items.push({s,pl:placeOf(p),st:'',txt:`今天 ${hm(w.st)} 上班`});
-    else if(now<w.en)items.push({s,pl:placeOf(p),st:'on',txt:`上班中，${hm(w.en)} 下班`});
-    else items.push({s,pl:placeOf(p),st:'done',txt:'今天下班了'});
+    if(!w)items.push({s,pl:placeOf(p),cls:'',txt:''});
+    else if(now<w.st)items.push({s,pl:placeOf(p),cls:'',txt:`今天 ${hm(w.st)} 上班`});
+    else if(now<w.en)items.push({s,pl:placeOf(p),cls:'now',st:'on',txt:`上班中，${hm(w.en)} 下班`});
+    else items.push({s,pl:placeOf(p),cls:'done',txt:'今天下班了'});
   });
-  $('todaycard').className='todaycard p-'+per.k;
-  let h=`<svg class="deco" viewBox="0 0 24 24" aria-hidden="true">${DECO[per.icon]}</svg>
-    <div class="lbl"><span class="greet">${per.g}</span><b>${m}月${d}日</b><span class="wd">星期${WD[NOW.getDay()]}</span></div><div class="todayshift">`;
-  if(items.length)items.forEach(w=>{h+=`<div class="ts${w.st==='done'?' done':''}"><span class="chip s-${w.s}">${w.s}</span><span class="tx"><small>${esc(w.pl.label)}${w.sub?`<span class="dot">•</span>${w.sub}`:''}</small><b>${w.s} 班</b>${w.txt?`<span class="st${w.st==='on'?' on':''}">${w.txt}</span>`:(tt(w.s)?`<span class="tm">${tt(w.s)}</span>`:'')}</span></div>`});
-  else h+=`<div class="ts off"><span class="chip">${ic('moon')}</span><span class="tx"><b>今日休息</b></span></div>`;
+  let h=`<div class="sec-h"><b>今天的班</b><span>${m}/${d}（${WD[NOW.getDay()]}）</span></div><div class="slots">`;
+  if(items.length)items.forEach(w=>{h+=`<div class="slot ${w.cls}"><div class="info"><span class="chip s-${w.s}">${w.s}</span><span class="tx"><small>${esc(w.pl.label)}${w.sub?`<span class="dot">•</span>${w.sub}`:''}</small><b>${w.s} 班</b>${w.txt?`<span class="st${w.st==='on'?' on':''}">${w.txt}</span>`:(tt(w.s)?`<span class="st">${tt(w.s)}</span>`:'')}</span></div></div>`});
+  else h+=`<div class="slot off"><div class="info"><span class="chip">${ic('moon')}</span>今日休息</div></div>`;
   h+='</div>';
   const tw=me.map(p=>({s:shiftOn(p.id,tm.getFullYear(),tm.getMonth()+1,tm.getDate()),pl:placeOf(p)})).filter(w=>w.s);
-  h+=`<div class="tomorrow"><div class="tlbl"><span>明天</span><b>${tm.getMonth()+1}/${tm.getDate()}（${WD[tm.getDay()]}）</b></div><div class="tlist">${tw.length?tw.map(w=>`<div class="tw"><span class="chip s-${w.s}">${w.s}</span><span><b>${esc(w.pl.label)}<span class="dot">•</span>${w.s} 班</b>${tt(w.s)?`<small>${tt(w.s)}</small>`:''}</span></div>`).join(''):`<div class="tw off">${ic('moon')}休息</div>`}</div></div>`;
-  h+=`<div class="go">看今天班表${ic('down')}</div>`;
+  h+=`<div class="tmr"><div class="sec-h"><b>明天</b><span>${tm.getMonth()+1}/${tm.getDate()}（${WD[tm.getDay()]}）</span></div><div class="slots">`;
+  if(tw.length)tw.forEach(w=>{h+=`<div class="slot small"><div class="info"><span class="chip s-${w.s}">${w.s}</span><span class="tx"><b>${esc(w.pl.label)}<span class="dot">•</span>${w.s} 班</b>${tt(w.s)?`<small>${tt(w.s)}</small>`:''}</span></div></div>`});
+  else h+=`<div class="slot small off"><div class="info"><span class="chip">${ic('moon')}</span>休息</div></div>`;
+  h+=`</div></div><div class="go">看今天班表${ic('down')}</div>`;
   $('todaycard').innerHTML=h;
+  renderWeek();
+}
+// 這一週（星期日到星期六）
+function renderWeek(){
+  const me=meList();
+  const base=new Date(NOW.getFullYear(),NOW.getMonth(),NOW.getDate());base.setDate(base.getDate()-base.getDay());
+  let h=`<div class="sec-h"><b>這一週</b><span>點日期看那一天</span></div><div class="wk">`;
+  for(let i=0;i<7;i++){
+    const dd=new Date(base);dd.setDate(base.getDate()+i);
+    const sh=me.map(p=>shiftOn(p.id,dd.getFullYear(),dd.getMonth()+1,dd.getDate())).filter(Boolean);
+    const isT=dd.toDateString()===NOW.toDateString();
+    const cls=['wd-b'];if(i===0)cls.push('sun');if(i===6)cls.push('sat');if(isT)cls.push('today');
+    h+=`<button class="${cls.join(' ')}" data-wy="${dd.getFullYear()}" data-wm="${dd.getMonth()+1}" data-wd="${dd.getDate()}" aria-label="${dd.getMonth()+1}月${dd.getDate()}日 ${sh.length?sh.join('、')+'班':'休息'}"><small>${WD[i]}</small><b>${dd.getDate()}</b>${sh.length?sh.map(x=>`<span class="wc s-${x}">${x}</span>`).join(''):'<span class="wc rest">休</span>'}</button>`;
+  }
+  $('week').innerHTML=h+'</div>';
 }
 
 function render(){
   NOW=getNow();
   renderToday();
-  document.title=meName()+'班表';$('appTitle').textContent=meName()+'的班表';
+  document.title=meName()+'班表';
   $('mtitle').textContent=M+' 月';$('ytitle').textContent=Y+' 年';
   $('backnow').hidden=isNowMonth();
   $('prev').disabled=key(Y,M)<=firstMonth();
@@ -771,7 +805,8 @@ if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostnam
 function exampleRow(){const d=isNowMonth()?NOW.getDate():1;return document.querySelector(`[data-row="${d}"]`)||document.querySelector('[data-row]')}
 const exampleCell=()=>{const r=exampleRow();return r&&r.querySelector('[data-p="p3"]')};
 const T={
-  today:{el:()=>$('todaycard'),title:'今天上什麼班',text:'最上面這張卡片會跟您打招呼，寫現在要不要上班、幾點上班或下班，還有明天的班。卡片顏色會跟著早上、下午、晚上變換。'},
+  today:{el:()=>$('todaycard'),title:'今天上什麼班',text:'最上面會跟您打招呼。下面這張卡片寫：<ul><li>今天的班，左邊大字是幾點上班；上班中會寫幾點下班</li><li>明天的班</li></ul>'},
+  week:{el:()=>$('week'),title:'這一週的班',text:'這裡一次看這一週七天的班。今天用藍色標起來，點任何一天，就會跳到表格裡那一天。'},
   month:{el:()=>$('monthnav'),title:'換月份',text:'按左右兩邊的箭頭，可以看上個月或下個月。打開時會自動顯示這個月。最早只到開始上班的那個月，左邊箭頭會變淡。'},
   total:{el:()=>$('totalBtn'),title:'這個月上幾天',text:'這裡寫這個月一共上幾天班。點一下可以看每一種班各幾天。'},
   todayTap:{el:()=>$('todaycard'),title:'點卡片看表格',text:'點一下這張卡片，或右下角的「看今天班表」，就會跳到下面的班表，直接看到今天那一行，前後幾天的班也看得到。'},
@@ -799,7 +834,7 @@ const T={
   inst3:{title:'選「加到主畫面」',text:'在選單裡點「加到主畫面」。有的手機會寫「安裝應用程式」，點它也可以。'},
   inst4:{title:'按「安裝」',text:'跳出視窗後按「安裝」或「新增」。回到手機桌面，就會看到藍色的「班表」圖示，以後點它就能打開。'},
 };
-const MAIN_TOUR=[{title:'歡迎使用班表',text:'這是洪國昌的班表。接下來用幾個步驟，帶您看怎麼使用。'},T.today,T.todayTap,T.month,T.total,T.mine,T.places,T.row,T.lock,T.cell,T.pick,T.done,T.toTop,T.menu,T.remember];
+const MAIN_TOUR=[{title:'歡迎使用班表',text:'這是洪國昌的班表。接下來用幾個步驟，帶您看怎麼使用。'},T.today,T.todayTap,T.week,T.month,T.total,T.mine,T.places,T.row,T.lock,T.cell,T.pick,T.done,T.toTop,T.menu,T.remember];
 const HELP=[
   {icon:'sun',q:'今天上什麼班？',a:'<p>打開畫面，最上面的卡片會寫今天上什麼班、幾點上班，上班中會寫幾點下班，還有明天的班。點這張卡片，會直接跳到表格裡今天那一行。今天那一行也會用淡黃色框起來。</p>',tour:[T.today,T.todayTap,T.row]},
   {icon:'calendar',q:'怎麼看其他月份？',a:'<p>按月份兩邊的箭頭換月份。看別的月份時，會出現「回到這個月」按鈕，按一下就回來。</p>',tour:[T.month]},
@@ -846,6 +881,12 @@ function goToday(){
   if(r){r.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});r.animate&&r.animate([{transform:'scale(1)'},{transform:'scale(1.03)'},{transform:'scale(1)'}],{duration:500,delay:350})}
 }
 $('todaycard').addEventListener('click',goToday);
+$('week').addEventListener('click',e=>{
+  const b=e.target.closest('[data-wd]');if(!b)return;
+  Y=+b.dataset.wy;M=+b.dataset.wm;render();
+  const r=document.querySelector(`[data-row="${b.dataset.wd}"]`);
+  if(r){const top=r.getBoundingClientRect().top+scrollY-$('head').getBoundingClientRect().height-40;scrollTo({top,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});r.animate&&r.animate([{background:'#d6e9fa'},{background:'transparent'}],{duration:1600,delay:300})}
+});
 $('todaycard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();goToday()}});
 function showNames(){
   const list=state.people.filter(p=>!(p.me&&p.id!==state.people.find(q=>q.me).id));
